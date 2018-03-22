@@ -4,10 +4,21 @@ body {
 #game-canvas {
   position:absolute;
   z-index: 1;
+  left:300px;
 }
 #whale-canvas {
   top:385px;
-  left:240px;
-  position:absolute;
+  left:540px;
+  position:relative;
   z-index:3;
+}
+#timer {
+  position:absolute;
+  top: 400px;
+  left:150px;
+}
+#score {
+  position: absolute;
+  top: 400px;
+  left: 940px;
 }

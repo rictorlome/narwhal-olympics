@@ -1,6 +1,7 @@
 import { Whale } from './whale';
 import { Ocean, Ground, Background } from './nature';
-
+import { Timer } from './timer';
+import { Score } from './score';
 import { Camera } from '../lib/camera'
 
 export class Game {
@@ -12,8 +13,8 @@ export class Game {
       game: this
     })
     this.background = new Background()
-    this.ground = new Ground();
-    this.ocean = new Ocean();
+    this.timer = new Timer()
+    this.score = new Score(this.whale)
   }
 
   randomPosition() {

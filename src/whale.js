@@ -13,8 +13,6 @@ export class Whale extends MovingObject {
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
-    this.turningL = false;
-    this.turningR = false;
   }
   accelerate() {
     if (this.underwater && this.vel[0] < 12) {
@@ -71,15 +69,14 @@ export class Whale extends MovingObject {
 
   checkWipeout() {
     let depth = this.pos[1]
-    if (depth > 9500) {
+    if (depth > 9450) {
       this.vel[0] = .4
-      this.vel[1] = -4
+      this.vel[1] = -2
     }
   }
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
-
     this.checkTimeout()
     this.checkWipeout()
     if (this.underwater) {

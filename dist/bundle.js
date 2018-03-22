@@ -110,8 +110,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Game", function() { return Game; });
 /* harmony import */ var _whale__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./whale */ "./src/whale.js");
 /* harmony import */ var _nature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nature */ "./src/nature.js");
-/* harmony import */ var _lib_camera__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../lib/camera */ "./lib/camera.js");
-/* harmony import */ var _lib_camera__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_lib_camera__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _timer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./timer */ "./src/timer.js");
+/* harmony import */ var _score__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./score */ "./src/score.js");
+/* harmony import */ var _lib_camera__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../lib/camera */ "./lib/camera.js");
+/* harmony import */ var _lib_camera__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_lib_camera__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
@@ -126,8 +129,8 @@ class Game {
       game: this
     });
     this.background = new _nature__WEBPACK_IMPORTED_MODULE_1__["Background"]();
-    this.ground = new _nature__WEBPACK_IMPORTED_MODULE_1__["Ground"]();
-    this.ocean = new _nature__WEBPACK_IMPORTED_MODULE_1__["Ocean"]();
+    this.timer = new _timer__WEBPACK_IMPORTED_MODULE_2__["Timer"]();
+    this.score = new _score__WEBPACK_IMPORTED_MODULE_3__["Score"](this.whale);
   }
 
   randomPosition() {
@@ -359,6 +362,62 @@ const fall = (vel, timeOut) => {
 
 /***/ }),
 
+/***/ "./src/score.js":
+/*!**********************!*\
+  !*** ./src/score.js ***!
+  \**********************/
+/*! exports provided: Score */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Score", function() { return Score; });
+class Score {
+  constructor(whale) {
+    this.whale = whale;
+    this.score = 0;
+    window.setInterval(() => {
+      this.display();
+    }, 100);
+  }
+
+  display() {
+    const score = document.getElementById('score');
+    score.innerHTML = `Score: ${this.score}`;
+  }
+}
+
+/***/ }),
+
+/***/ "./src/timer.js":
+/*!**********************!*\
+  !*** ./src/timer.js ***!
+  \**********************/
+/*! exports provided: Timer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Timer", function() { return Timer; });
+class Timer {
+  constructor() {
+    this.timeleft = 120;
+    window.setInterval(() => {
+      this.display();
+      this.decrement();
+    }, 1000);
+  }
+  decrement() {
+    this.timeleft--;
+  }
+  display() {
+    const timer = document.getElementById('timer');
+    timer.innerHTML = `Time Left: ${this.timeleft}`;
+  }
+}
+
+/***/ }),
+
 /***/ "./src/whale-olympics.js":
 /*!*******************************!*\
   !*** ./src/whale-olympics.js ***!
@@ -413,8 +472,6 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
-    this.turningL = false;
-    this.turningR = false;
   }
   accelerate() {
     if (this.underwater && this.vel[0] < 12) {
@@ -471,15 +528,14 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
 
   checkWipeout() {
     let depth = this.pos[1];
-    if (depth > 9500) {
+    if (depth > 9450) {
       this.vel[0] = .4;
-      this.vel[1] = -4;
+      this.vel[1] = -2;
     }
   }
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
-
     this.checkTimeout();
     this.checkWipeout();
     if (this.underwater) {
