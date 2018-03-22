@@ -1,5 +1,5 @@
 import { Whale } from './whale';
-import { Ocean, Ground } from './nature';
+import { Ocean, Ground, Background } from './nature';
 
 import { Camera } from '../lib/camera'
 
@@ -11,20 +11,20 @@ export class Game {
       pos: this.randomPosition(),
       game: this
     })
+    this.background = new Background()
     this.ground = new Ground();
     this.ocean = new Ocean();
   }
 
   randomPosition() {
     const x = Math.floor(Math.random() * this.DIM_X);
-    const y = Math.floor(Math.random() * this.DIM_Y);
+    const y = Math.floor((Math.random() * 1000) + 4000);
     return [x,y];
   }
 
   draw(ctx) {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-    this.ground.draw(ctx)
-    this.ocean.draw(ctx)
+    this.background.draw(ctx,this.whale)
     this.whale.draw(ctx)
   }
 

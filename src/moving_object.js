@@ -13,8 +13,8 @@ export class MovingObject {
     ctx.beginPath();
 
     ctx.arc(
-      this.pos[0],
-      this.pos[1],
+      750,
+      1000,
       this.radius,
       0,
       2 * Math.PI,
@@ -22,7 +22,6 @@ export class MovingObject {
     );
 
     ctx.fill();
-
   };
 
 }

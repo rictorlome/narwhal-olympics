@@ -8,13 +8,13 @@ export class GameView {
     this.whale = this.game.whale
     window.whale = this.whale
   }
-  
+
   start() {
     const boundGameDraw = Game.prototype.draw.bind(this.game);
     const boundGameMoveObjects = Game.prototype.moveObjects.bind(this.game)
     this.bindKeyHandlers();
-    window.setInterval(boundGameDraw, 20, this.ctx);
-    window.setInterval(boundGameMoveObjects, 20, this.ctx);
+    window.setInterval(boundGameDraw, 40, this.ctx);
+    window.setInterval(boundGameMoveObjects, 40, this.ctx);
   }
 
   bindKeyHandlers() {
@@ -22,5 +22,7 @@ export class GameView {
     key('down', () => this.whale.decelerate());
     key('left', () => this.whale.turnLeft());
     key('right', () => this.whale.turnRight());
+    key('space', () => this.whale.freeze());
+    key('n', ()=> this.whale.nudge())
   }
 }

@@ -20,6 +20,9 @@ export class Whale extends MovingObject {
   decelerate() {
     this.vel = PhysUtil.scale(this.vel, .8)
   }
+  nudge() {
+    this.vel = [.3,-.3]
+  }
   turnLeft() {
     let degree = PhysUtil.degree(this.vel)
     let speed = PhysUtil.speed(this.vel)
@@ -30,8 +33,11 @@ export class Whale extends MovingObject {
     let speed = PhysUtil.speed(this.vel)
     this.vel = PhysUtil.specificVec((degree+15 % 360), speed)
   }
+  freeze() {
+    this.vel = [0,0]
+  }
   checkTimeout() {
-    if (this.pos[1] < 1100) {
+    if (this.pos[1] < 4050) {
       this.underwater = false;
       this.timeOut += 1;
     } else {
@@ -39,10 +45,16 @@ export class Whale extends MovingObject {
       this.timeOut = 0;
     }
   }
+  checkWipeout() {
+    if (this.pos[1] > 5200) {
+      this.vel[1] = -4
+    }
+  }
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
     this.checkTimeout()
+    this.checkWipeout()
     if (!this.underwater) {
       this.vel = PhysUtil.fall(this.vel,this.timeOut)
     }
