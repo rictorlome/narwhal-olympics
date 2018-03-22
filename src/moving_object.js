@@ -13,7 +13,7 @@ export class MovingObject {
     let height = 49.61;
 
     let img = new Image(width,height)
-    img.src = '/Users/c/workspace/whale-olympics/assets/narwhal-right.png'
+    img.src = 'assets/narwhal-right.png'
     let rad = this.angle * Math.PI / 180
     ctx.translate(50,50)
     ctx.rotate(rad)

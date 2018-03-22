@@ -219,7 +219,7 @@ class MovingObject {
     let height = 49.61;
 
     let img = new Image(width, height);
-    img.src = '/Users/c/workspace/whale-olympics/assets/narwhal-right.png';
+    img.src = 'assets/narwhal-right.png';
     let rad = this.angle * Math.PI / 180;
     ctx.translate(50, 50);
     ctx.rotate(rad);
@@ -303,7 +303,7 @@ class Ground {
 class Background {
   draw(ctx, whale) {
     let img = new Image(2500, 10000);
-    img.src = '/Users/c/workspace/whale-olympics/assets/whale-olympics-background.png';
+    img.src = 'assets/whale-olympics-background.png';
     let sx = whale.pos[0];
     let sy = whale.pos[1];
     ctx.drawImage(img, (sx - 2212) % 2500, sy, 575, 750, 0, 0, 575, 750);
