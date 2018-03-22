@@ -2,9 +2,10 @@ import { Game } from './game'
 import { Whale } from './whale'
 
 export class GameView {
-  constructor(game, ctx) {
+  constructor(game, bCtx, wCtx) {
     this.game = game;
-    this.ctx = ctx;
+    this.bCtx = bCtx;
+    this.wCtx = wCtx;
     this.whale = this.game.whale
     window.whale = this.whale
   }
@@ -13,8 +14,8 @@ export class GameView {
     const boundGameDraw = Game.prototype.draw.bind(this.game);
     const boundGameMoveObjects = Game.prototype.moveObjects.bind(this.game)
     this.bindKeyHandlers();
-    window.setInterval(boundGameDraw, 40, this.ctx);
-    window.setInterval(boundGameMoveObjects, 40, this.ctx);
+    window.setInterval(boundGameDraw, 20, this.bCtx, this.wCtx);
+    window.setInterval(boundGameMoveObjects, 20);
   }
 
   bindKeyHandlers() {

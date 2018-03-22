@@ -8,7 +8,7 @@ export class Game {
     this.DIM_X = DIM_X;
     this.DIM_Y = DIM_Y;
     this.whale = new Whale({
-      pos: this.randomPosition(),
+      pos: [900,7400],
       game: this
     })
     this.background = new Background()
@@ -22,10 +22,11 @@ export class Game {
     return [x,y];
   }
 
-  draw(ctx) {
-    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-    this.background.draw(ctx,this.whale)
-    this.whale.draw(ctx)
+  draw(bCtx, wCtx) {
+    bCtx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+    wCtx.clearRect(0, 0, 100, 100)
+    this.background.draw(bCtx,this.whale)
+    this.whale.draw(wCtx)
   }
 
   moveObjects() {

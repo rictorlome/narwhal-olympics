@@ -1,6 +1,13 @@
 body {
   background-color: yellow;
 }
-canvas {
-  background-color: white;
+#game-canvas {
+  position:absolute;
+  z-index: 1;
+}
+#whale-canvas {
+  top:385px;
+  left:240px;
+  position:absolute;
+  z-index:3;
 }

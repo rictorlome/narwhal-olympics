@@ -22,6 +22,6 @@ export const degree = (vel) => {
 export const fall = (vel, timeOut) => {
   let x = vel[0]
   let y = vel[1]
-  y = y + (.05 * timeOut)
+  y = y + (.01 * timeOut)
   return [x, y]
 }

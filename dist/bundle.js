@@ -122,7 +122,7 @@ class Game {
     this.DIM_X = DIM_X;
     this.DIM_Y = DIM_Y;
     this.whale = new _whale__WEBPACK_IMPORTED_MODULE_0__["Whale"]({
-      pos: this.randomPosition(),
+      pos: [900, 7400],
       game: this
     });
     this.background = new _nature__WEBPACK_IMPORTED_MODULE_1__["Background"]();
@@ -136,10 +136,11 @@ class Game {
     return [x, y];
   }
 
-  draw(ctx) {
-    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-    this.background.draw(ctx, this.whale);
-    this.whale.draw(ctx);
+  draw(bCtx, wCtx) {
+    bCtx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+    wCtx.clearRect(0, 0, 100, 100);
+    this.background.draw(bCtx, this.whale);
+    this.whale.draw(wCtx);
   }
 
   moveObjects() {
@@ -165,9 +166,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class GameView {
-  constructor(game, ctx) {
+  constructor(game, bCtx, wCtx) {
     this.game = game;
-    this.ctx = ctx;
+    this.bCtx = bCtx;
+    this.wCtx = wCtx;
     this.whale = this.game.whale;
     window.whale = this.whale;
   }
@@ -176,8 +178,8 @@ class GameView {
     const boundGameDraw = _game__WEBPACK_IMPORTED_MODULE_0__["Game"].prototype.draw.bind(this.game);
     const boundGameMoveObjects = _game__WEBPACK_IMPORTED_MODULE_0__["Game"].prototype.moveObjects.bind(this.game);
     this.bindKeyHandlers();
-    window.setInterval(boundGameDraw, 40, this.ctx);
-    window.setInterval(boundGameMoveObjects, 40, this.ctx);
+    window.setInterval(boundGameDraw, 20, this.bCtx, this.wCtx);
+    window.setInterval(boundGameMoveObjects, 20);
   }
 
   bindKeyHandlers() {
@@ -213,12 +215,19 @@ class MovingObject {
   }
 
   draw(ctx) {
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
+    let width = 115;
+    let height = 49.61;
 
-    ctx.arc(750, 1000, this.radius, 0, 2 * Math.PI, false);
+    let img = new Image(width, height);
+    img.src = '/Users/c/workspace/whale-olympics/assets/narwhal.png';
+    let rad = this.angle * Math.PI / 180;
+    ctx.translate(50, 50);
+    ctx.rotate(rad);
 
-    ctx.fill();
+    ctx.drawImage(img, 0, 65, 255, 110, -width / 2, -height / 2, width, height);
+
+    ctx.rotate(-rad);
+    ctx.translate(-50, -50);
   }
 }
 
@@ -254,11 +263,13 @@ class Ground {
 
 class Background {
   draw(ctx, whale) {
-    let img = new Image(10200, 6756);
-    img.src = '/Users/c/workspace/whale-olympics/assets/ocean_blues.jpg';
-    let sx = whale.pos[0] % 4000;
+    let img = new Image(2500, 10000);
+    img.src = '/Users/c/workspace/whale-olympics/assets/whale-olympics-background.png';
+    let sx = whale.pos[0];
     let sy = whale.pos[1];
-    ctx.drawImage(img, sx, sy, 2000, 1500, 0, 0, 2000, 1500);
+    ctx.drawImage(img, (sx - 2212) % 2500, sy, 575, 750, 0, 0, 575, 750);
+    ctx.drawImage(img, sx % 2500, sy, 575, 750, 0, 0, 575, 750);
+    ctx.drawImage(img, (sx + 2212) % 2500, sy, 575, 750, 0, 0, 575, 750);
   }
 }
 
@@ -303,7 +314,7 @@ const degree = vel => {
 const fall = (vel, timeOut) => {
   let x = vel[0];
   let y = vel[1];
-  y = y + .05 * timeOut;
+  y = y + .01 * timeOut;
   return [x, y];
 };
 
@@ -324,11 +335,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('game-canvas');
-  const ctx = canvas.getContext('2d');
+  const bCanvas = document.getElementById('game-canvas');
+  const bCtx = bCanvas.getContext('2d');
 
-  const new_game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](2000, 1500);
-  const new_game_view = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](new_game, ctx);
+  const wCanvas = document.getElementById('whale-canvas');
+  const wCtx = wCanvas.getContext('2d');
+
+  const new_game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](575, 750);
+  const new_game_view = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](new_game, bCtx, wCtx);
 
   new_game_view.start();
 });
@@ -358,6 +372,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     super(option);
     this.underwater = true;
     this.timeOut = 0;
+    this.angle = 0;
   }
   accelerate() {
     if (this.underwater) {
@@ -373,33 +388,37 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   turnLeft() {
     let degree = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
     let speed = _physics_util__WEBPACK_IMPORTED_MODULE_1__["speed"](this.vel);
-    this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree - 15 % 360, speed);
+    this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree - 5 % 360, speed);
   }
   turnRight() {
     let degree = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
     let speed = _physics_util__WEBPACK_IMPORTED_MODULE_1__["speed"](this.vel);
-    this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree + 15 % 360, speed);
+    this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree + 5 % 360, speed);
   }
   freeze() {
     this.vel = [0, 0];
   }
   checkTimeout() {
-    if (this.pos[1] < 4050) {
-      this.underwater = false;
-      this.timeOut += 1;
-    } else {
+    let depth = this.pos[1];
+    if (depth > 8775) {
       this.underwater = true;
       this.timeOut = 0;
+    } else {
+      this.underwater = false;
+      this.timeOut++;
     }
   }
   checkWipeout() {
-    if (this.pos[1] > 5200) {
+    let depth = this.pos[1];
+    if (depth > 9500) {
+      this.vel[0] = .4;
       this.vel[1] = -4;
     }
   }
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
+    this.angle = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
     this.checkTimeout();
     this.checkWipeout();
     if (!this.underwater) {
