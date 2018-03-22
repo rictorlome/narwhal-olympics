@@ -13,6 +13,7 @@ export class Whale extends MovingObject {
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
+    this.waterline = 8745;
   }
   accelerate() {
     if (this.underwater && this.vel[0] < 12) {
@@ -48,41 +49,46 @@ export class Whale extends MovingObject {
   }
   checkTimeout() {
     let depth = this.pos[1];
-    if (depth > 8780) {
+    if (depth > this.waterline) {
       this.underwater = true;
       this.timeOut = 0;
-    } else if (depth < 8770) {
+      this.landing = false;
+    } else if (depth < this.waterline-10) {
       this.underwater = false;
       this.timeOut++;
+      this.landing = false;
     } else {
-      this.checkLanding()
+      this.landing = true;
     }
   }
 
   checkLanding() {
+    debugger
     let diff = Math.abs(this.angle - PhysUtil.degree(this.vel))
-    if (diff > 20 && this.vel[1] > 0) {
-      this.vel[0] /= 10;
-      this.vel[1] /= 10;
+    if (diff > 23 && this.vel[1] > 2 && this.landing) {
+      this.vel[0] = .4;
+      this.vel[1] = 2;
     }
   }
 
   checkWipeout() {
-    let depth = this.pos[1]
+    let depth = this.pos[1];
     if (depth > 9450) {
-      this.vel[0] = .4
-      this.vel[1] = -2
+      this.vel[0] = .4;
+      this.vel[1] = -2;
     }
   }
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
-    this.checkTimeout()
-    this.checkWipeout()
+    this.checkTimeout();
+    this.checkLanding();
+    this.checkWipeout();
     if (this.underwater) {
-      this.angle = PhysUtil.degree(this.vel)
+      this.angle = PhysUtil.degree(this.vel);
+      this.vel = PhysUtil.slow(this.vel,this.pos[1]);
     } else {
-      this.vel = PhysUtil.fall(this.vel,this.timeOut)
+      this.vel = PhysUtil.fall(this.vel,this.timeOut);
     }
   }
 }

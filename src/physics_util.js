@@ -22,6 +22,17 @@ export const degree = (vel) => {
 export const fall = (vel, timeOut) => {
   let x = vel[0]
   let y = vel[1]
+  if (y > 36) return [x,y]
   y = y + (.005 * timeOut)
   return [x, y]
+}
+//8800 waterline
+//9450 ground
+export const slow = (vel, depth) => {
+  depth = 9000 - depth
+  let x = vel[0]
+  let y = vel[1]
+  if (vel[1] < 0) return [x,y]
+  y = y + (depth/500)
+  return [x,y]
 }

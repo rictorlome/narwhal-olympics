@@ -321,7 +321,7 @@ class Background {
 /*!*****************************!*\
   !*** ./src/physics_util.js ***!
   \*****************************/
-/*! exports provided: randomVec, specificVec, scale, speed, degree, fall */
+/*! exports provided: randomVec, specificVec, scale, speed, degree, fall, slow */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -332,6 +332,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "speed", function() { return speed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "degree", function() { return degree; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fall", function() { return fall; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "slow", function() { return slow; });
 const randomVec = length => {
   const deg = 2 * Math.PI * Math.random();
   return scale([Math.cos(deg), Math.sin(deg)], length);
@@ -356,7 +357,18 @@ const degree = vel => {
 const fall = (vel, timeOut) => {
   let x = vel[0];
   let y = vel[1];
+  if (y > 36) return [x, y];
   y = y + .005 * timeOut;
+  return [x, y];
+};
+//8800 waterline
+//9450 ground
+const slow = (vel, depth) => {
+  depth = 9000 - depth;
+  let x = vel[0];
+  let y = vel[1];
+  if (vel[1] < 0) return [x, y];
+  y = y + depth / 500;
   return [x, y];
 };
 
@@ -378,10 +390,60 @@ class Score {
     this.score = 0;
     window.setInterval(() => {
       this.display();
-    }, 100);
+      this.checkWhale();
+    }, 20);
+    this.tricks = {
+      'fifty': false,
+      'hundred': false,
+      'twohun': false,
+      'halfflip': false,
+      'oneflip': false,
+      'oneandhalfflip': false
+    };
+  }
+
+  checkWhale() {
+    if (this.whale.underwater) {
+      this.resetTricks();
+    } else {
+      this.addAir();
+      this.addFlips();
+    }
+  }
+  resetTricks() {
+    Object.keys(this.tricks).forEach(key => {
+      this.tricks[key] = false;
+    });
+  }
+
+  addAir() {
+    if (this.whale.pos[1] < 7200 && !this.tricks['fifty']) {
+      this.tricks['fifty'] = true;
+      this.score += 50;
+    }
+    if (this.whale.pos[1] < 6000 && !this.tricks['hundred']) {
+      this.tricks['hundred'] = true;
+      this.score += 100;
+    }
+    if (this.whale.pos[1] < 5000 && !this.tricks['twohun']) {
+      this.tricks['twohun'] = true;
+      this.score += 200;
+    }
+  }
+  addFlips() {
+    if (this.whale.angle < -145 && !this.tricks['halfflip']) {
+      this.tricks['halfflip'] = true;
+      this.score += 150;
+    }
+    if (this.whale.angle > 40 && this.tricks['halfflip'] && this.tricks['oneflip']) {
+      this.tricks['oneflip'] = true;
+      this.score += 300;
+    }
   }
 
   display() {
+    const announcements = document.getElementById('announcements');
+
     const score = document.getElementById('score');
     score.innerHTML = `Score: ${this.score}`;
   }
@@ -472,6 +534,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
+    this.waterline = 8745;
   }
   accelerate() {
     if (this.underwater && this.vel[0] < 12) {
@@ -507,22 +570,25 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   }
   checkTimeout() {
     let depth = this.pos[1];
-    if (depth > 8780) {
+    if (depth > this.waterline) {
       this.underwater = true;
       this.timeOut = 0;
-    } else if (depth < 8770) {
+      this.landing = false;
+    } else if (depth < this.waterline - 10) {
       this.underwater = false;
       this.timeOut++;
+      this.landing = false;
     } else {
-      this.checkLanding();
+      this.landing = true;
     }
   }
 
   checkLanding() {
+    debugger;
     let diff = Math.abs(this.angle - _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel));
-    if (diff > 20 && this.vel[1] > 0) {
-      this.vel[0] /= 10;
-      this.vel[1] /= 10;
+    if (diff > 23 && this.vel[1] > 2 && this.landing) {
+      this.vel[0] = .4;
+      this.vel[1] = 2;
     }
   }
 
@@ -537,9 +603,11 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
     this.checkTimeout();
+    this.checkLanding();
     this.checkWipeout();
     if (this.underwater) {
       this.angle = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
+      this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["slow"](this.vel, this.pos[1]);
     } else {
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["fall"](this.vel, this.timeOut);
     }
