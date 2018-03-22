@@ -219,15 +219,54 @@ class MovingObject {
     let height = 49.61;
 
     let img = new Image(width, height);
-    img.src = '/Users/c/workspace/whale-olympics/assets/narwhal.png';
+    img.src = '/Users/c/workspace/whale-olympics/assets/narwhal-right.png';
     let rad = this.angle * Math.PI / 180;
     ctx.translate(50, 50);
     ctx.rotate(rad);
 
-    ctx.drawImage(img, 0, 65, 255, 110, -width / 2, -height / 2, width, height);
+    let framenumber = this.chooseFrameNum();
+
+    let sx = this.chooseFrameSxSy(framenumber)[0];
+    let sy = this.chooseFrameSxSy(framenumber)[1];
+
+    ctx.drawImage(img, sx, sy, 255, 110, -width / 2, -height / 2, width, height);
 
     ctx.rotate(-rad);
     ctx.translate(-50, -50);
+    this.updateFrameCount();
+  }
+  chooseFrameNum() {
+    if (this.turningL) {
+      return 6;
+    } else if (this.turningR) {
+      return 3;
+    } else if (!this.underwater) {
+      return 2;
+    }
+
+    if (this.framecount < 25) {
+      return 1;
+    } else if (this.framecount < 50) {
+      return 2;
+    } else if (this.framecount < 75) {
+      return 7;
+    } else if (this.framecount < 100) {
+      return 8;
+    }
+  }
+  updateFrameCount() {
+    this.framecount = (this.framecount + 1) % 100;
+  }
+
+  chooseFrameSxSy(num) {
+    if (num == 1) return [0, 65];
+    if (num == 2) return [255, 65];
+    if (num == 3) return [0, 350];
+    if (num == 4) return [255, 335];
+    if (num == 5) return [510, 335];
+    if (num == 6) return [0, 610];
+    if (num == 7) return [255, 595];
+    if (num == 8) return [510, 595];
   }
 }
 
@@ -314,7 +353,7 @@ const degree = vel => {
 const fall = (vel, timeOut) => {
   let x = vel[0];
   let y = vel[1];
-  y = y + .01 * timeOut;
+  y = y + .005 * timeOut;
   return [x, y];
 };
 
@@ -373,9 +412,12 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.underwater = true;
     this.timeOut = 0;
     this.angle = 0;
+    this.framecount = 0;
+    this.turningL = false;
+    this.turningR = false;
   }
   accelerate() {
-    if (this.underwater) {
+    if (this.underwater && this.vel[0] < 12) {
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["scale"](this.vel, 1.20);
     }
   }
@@ -388,26 +430,45 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   turnLeft() {
     let degree = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
     let speed = _physics_util__WEBPACK_IMPORTED_MODULE_1__["speed"](this.vel);
-    this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree - 5 % 360, speed);
+    if (this.underwater) {
+      this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree - 25 % 360, speed);
+    } else {
+      this.angle -= 15;
+    }
   }
   turnRight() {
     let degree = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
     let speed = _physics_util__WEBPACK_IMPORTED_MODULE_1__["speed"](this.vel);
-    this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree + 5 % 360, speed);
+    if (this.underwater) {
+      this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree + 25 % 360, speed);
+    } else {
+      this.angle += 15;
+    }
   }
   freeze() {
     this.vel = [0, 0];
   }
   checkTimeout() {
     let depth = this.pos[1];
-    if (depth > 8775) {
+    if (depth > 8780) {
       this.underwater = true;
       this.timeOut = 0;
-    } else {
+    } else if (depth < 8770) {
       this.underwater = false;
       this.timeOut++;
+    } else {
+      this.checkLanding();
     }
   }
+
+  checkLanding() {
+    let diff = Math.abs(this.angle - _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel));
+    if (diff > 20 && this.vel[1] > 0) {
+      this.vel[0] /= 10;
+      this.vel[1] /= 10;
+    }
+  }
+
   checkWipeout() {
     let depth = this.pos[1];
     if (depth > 9500) {
@@ -418,10 +479,12 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
-    this.angle = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
+
     this.checkTimeout();
     this.checkWipeout();
-    if (!this.underwater) {
+    if (this.underwater) {
+      this.angle = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
+    } else {
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["fall"](this.vel, this.timeOut);
     }
   }
