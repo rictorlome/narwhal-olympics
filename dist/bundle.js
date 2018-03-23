@@ -321,7 +321,7 @@ class Background {
 /*!*****************************!*\
   !*** ./src/physics_util.js ***!
   \*****************************/
-/*! exports provided: randomVec, specificVec, scale, speed, degree, fall, slow */
+/*! exports provided: randomVec, specificVec, scale, speed, degree, averageAngle, fall, slow */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -331,6 +331,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scale", function() { return scale; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "speed", function() { return speed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "degree", function() { return degree; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "averageAngle", function() { return averageAngle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fall", function() { return fall; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "slow", function() { return slow; });
 const randomVec = length => {
@@ -354,6 +355,11 @@ const speed = vel => {
 const degree = vel => {
   return Math.atan2(vel[1], vel[0]) * 180 / Math.PI;
 };
+
+const averageAngle = (angle1, angle2) => {
+  return (angle1 + angle2) / 2;
+};
+
 const fall = (vel, timeOut) => {
   let x = vel[0];
   let y = vel[1];
@@ -526,8 +532,6 @@ __webpack_require__.r(__webpack_exports__);
 
 class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] {
   constructor(option) {
-    option.radius = 20;
-    option.color = 'black';
     option.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](40, .5);
     super(option);
     this.underwater = true;
@@ -570,25 +574,22 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   }
   checkTimeout() {
     let depth = this.pos[1];
-    if (depth > this.waterline) {
+    if (depth > this.waterline + 10) {
       this.underwater = true;
       this.timeOut = 0;
-      this.landing = false;
     } else if (depth < this.waterline - 10) {
       this.underwater = false;
       this.timeOut++;
-      this.landing = false;
     } else {
-      this.landing = true;
+      this.checkLanding();
     }
   }
 
   checkLanding() {
-    debugger;
     let diff = Math.abs(this.angle - _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel));
-    if (diff > 23 && this.vel[1] > 2 && this.landing) {
-      this.vel[0] = .4;
-      this.vel[1] = 2;
+    if (diff > 30 && this.vel[1] > 2) {
+      this.vel[0] /= 10;
+      this.vel[1] /= 10;
     }
   }
 
@@ -603,10 +604,9 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
     this.checkTimeout();
-    this.checkLanding();
     this.checkWipeout();
     if (this.underwater) {
-      this.angle = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
+      this.angle = _physics_util__WEBPACK_IMPORTED_MODULE_1__["averageAngle"](this.angle, _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel));
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["slow"](this.vel, this.pos[1]);
     } else {
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["fall"](this.vel, this.timeOut);

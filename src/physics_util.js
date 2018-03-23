@@ -19,6 +19,11 @@ export const speed = (vel) => {
 export const degree = (vel) => {
   return Math.atan2(vel[1],vel[0]) * 180 / Math.PI
 }
+
+export const averageAngle = (angle1, angle2) => {
+  return (angle1 + angle2) / 2;
+}
+
 export const fall = (vel, timeOut) => {
   let x = vel[0]
   let y = vel[1]

@@ -5,8 +5,6 @@ import * as PhysUtil from './physics_util'
 
 export class Whale extends MovingObject {
   constructor(option) {
-    option.radius = 20;
-    option.color = 'black';
     option.vel = PhysUtil.specificVec(40, .5);
     super(option)
     this.underwater = true;
@@ -49,25 +47,22 @@ export class Whale extends MovingObject {
   }
   checkTimeout() {
     let depth = this.pos[1];
-    if (depth > this.waterline) {
+    if (depth > this.waterline+10) {
       this.underwater = true;
       this.timeOut = 0;
-      this.landing = false;
     } else if (depth < this.waterline-10) {
       this.underwater = false;
       this.timeOut++;
-      this.landing = false;
     } else {
-      this.landing = true;
+      this.checkLanding()
     }
   }
 
   checkLanding() {
-    debugger
     let diff = Math.abs(this.angle - PhysUtil.degree(this.vel))
-    if (diff > 23 && this.vel[1] > 2 && this.landing) {
-      this.vel[0] = .4;
-      this.vel[1] = 2;
+    if (diff > 30 && this.vel[1] > 2) {
+      this.vel[0] /= 10;
+      this.vel[1] /= 10;
     }
   }
 
@@ -82,10 +77,9 @@ export class Whale extends MovingObject {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
     this.checkTimeout();
-    this.checkLanding();
     this.checkWipeout();
     if (this.underwater) {
-      this.angle = PhysUtil.degree(this.vel);
+      this.angle = PhysUtil.averageAngle(this.angle, PhysUtil.degree(this.vel));
       this.vel = PhysUtil.slow(this.vel,this.pos[1]);
     } else {
       this.vel = PhysUtil.fall(this.vel,this.timeOut);
