@@ -9,7 +9,7 @@ export class Game {
     this.DIM_X = DIM_X;
     this.DIM_Y = DIM_Y;
     this.whale = new Whale({
-      pos: [900,7400],
+      pos: [90000000000000,7400],
       game: this
     })
     this.background = new Background()

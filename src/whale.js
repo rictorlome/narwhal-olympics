@@ -1,8 +1,6 @@
 import { MovingObject } from './moving_object'
 import * as PhysUtil from './physics_util'
 
-
-
 export class Whale extends MovingObject {
   constructor(option) {
     option.vel = PhysUtil.specificVec(40, .5);
@@ -11,10 +9,10 @@ export class Whale extends MovingObject {
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
-    this.waterline = 8745;
+    this.waterline = 8585;
   }
   accelerate() {
-    if (this.underwater && this.vel[0] < 12) {
+    if (this.underwater && Math.abs(this.vel[0]) < 10) {
       this.vel = PhysUtil.scale(this.vel, 1.20)
     }
   }
@@ -60,7 +58,7 @@ export class Whale extends MovingObject {
 
   checkLanding() {
     let diff = Math.abs(this.angle - PhysUtil.degree(this.vel))
-    if (diff > 30 && this.vel[1] > 2) {
+    if (diff > 35 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
     }

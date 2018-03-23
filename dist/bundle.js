@@ -125,7 +125,7 @@ class Game {
     this.DIM_X = DIM_X;
     this.DIM_Y = DIM_Y;
     this.whale = new _whale__WEBPACK_IMPORTED_MODULE_0__["Whale"]({
-      pos: [900, 7400],
+      pos: [90000000000000, 7400],
       game: this
     });
     this.background = new _nature__WEBPACK_IMPORTED_MODULE_1__["Background"]();
@@ -309,9 +309,8 @@ class Background {
     img.src = 'assets/whale-olympics-background.png';
     let sx = whale.pos[0];
     let sy = whale.pos[1];
-    ctx.drawImage(img, (sx - 2212) % 2500, sy, 575, 750, 0, 0, 575, 750);
+    ctx.drawImage(img, (sx - 1925) % 2500, sy, 575, 750, 0, 0, 575, 750);
     ctx.drawImage(img, sx % 2500, sy, 575, 750, 0, 0, 575, 750);
-    ctx.drawImage(img, (sx + 2212) % 2500, sy, 575, 750, 0, 0, 575, 750);
   }
 }
 
@@ -367,10 +366,10 @@ const fall = (vel, timeOut) => {
   y = y + .005 * timeOut;
   return [x, y];
 };
-//8800 waterline
+//8500 waterline
 //9450 ground
 const slow = (vel, depth) => {
-  depth = 9000 - depth;
+  depth = 8900 - depth;
   let x = vel[0];
   let y = vel[1];
   if (vel[1] < 0) return [x, y];
@@ -406,6 +405,8 @@ class Score {
       'oneflip': false,
       'oneandhalfflip': false
     };
+    this.trickArray = [];
+    this.announcements = document.getElementById('announcements');
   }
 
   checkWhale() {
@@ -417,6 +418,7 @@ class Score {
     }
   }
   resetTricks() {
+    this.trickArray = [];
     Object.keys(this.tricks).forEach(key => {
       this.tricks[key] = false;
     });
@@ -425,14 +427,17 @@ class Score {
   addAir() {
     if (this.whale.pos[1] < 7200 && !this.tricks['fifty']) {
       this.tricks['fifty'] = true;
+      this.trickArray.push("Fifty Feet");
       this.score += 50;
     }
     if (this.whale.pos[1] < 6000 && !this.tricks['hundred']) {
       this.tricks['hundred'] = true;
+      this.trickArray.push("One Hundred Feet");
       this.score += 100;
     }
     if (this.whale.pos[1] < 5000 && !this.tricks['twohun']) {
       this.tricks['twohun'] = true;
+      this.trickArray.push("Two Hundred Feet");
       this.score += 200;
     }
   }
@@ -448,10 +453,9 @@ class Score {
   }
 
   display() {
-    const announcements = document.getElementById('announcements');
-
     const score = document.getElementById('score');
     score.innerHTML = `Score: ${this.score}`;
+    this.trickArray.length > 0 ? this.announcements.innerHTML = this.trickArray.join(', ').concat('!') : this.announcements.innerHTML = '';
   }
 }
 
@@ -538,10 +542,10 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
-    this.waterline = 8745;
+    this.waterline = 8585;
   }
   accelerate() {
-    if (this.underwater && this.vel[0] < 12) {
+    if (this.underwater && Math.abs(this.vel[0]) < 10) {
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["scale"](this.vel, 1.20);
     }
   }
@@ -587,7 +591,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
 
   checkLanding() {
     let diff = Math.abs(this.angle - _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel));
-    if (diff > 30 && this.vel[1] > 2) {
+    if (diff > 35 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
     }

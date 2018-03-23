@@ -22,3 +22,10 @@ body {
   top: 400px;
   left: 940px;
 }
+#announcements {
+  position: absolute;
+  top: 550px;
+  left: 568px;
+  z-index: 5;
+  max-width: 150px;
+}

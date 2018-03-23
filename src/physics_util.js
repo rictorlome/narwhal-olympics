@@ -31,10 +31,10 @@ export const fall = (vel, timeOut) => {
   y = y + (.005 * timeOut)
   return [x, y]
 }
-//8800 waterline
+//8500 waterline
 //9450 ground
 export const slow = (vel, depth) => {
-  depth = 9000 - depth
+  depth = 8900 - depth
   let x = vel[0]
   let y = vel[1]
   if (vel[1] < 0) return [x,y]

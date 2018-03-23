@@ -14,6 +14,8 @@ export class Score{
       'oneflip' : false,
       'oneandhalfflip' : false,
     }
+    this.trickArray = [];
+    this.announcements = document.getElementById('announcements')
   }
 
   checkWhale() {
@@ -25,6 +27,7 @@ export class Score{
     }
   }
   resetTricks() {
+    this.trickArray = [];
     Object.keys(this.tricks).forEach( (key) => {
       this.tricks[key] = false;
     })
@@ -33,14 +36,17 @@ export class Score{
   addAir() {
     if (this.whale.pos[1] < 7200 && !this.tricks['fifty']) {
       this.tricks['fifty'] = true;
+      this.trickArray.push("Fifty Feet");
       this.score += 50;
     }
     if (this.whale.pos[1] < 6000 && !this.tricks['hundred']) {
       this.tricks['hundred'] = true;
+      this.trickArray.push("One Hundred Feet");
       this.score += 100;
     }
     if (this.whale.pos[1] < 5000 && !this.tricks['twohun']) {
       this.tricks['twohun'] = true;
+      this.trickArray.push("Two Hundred Feet");
       this.score += 200;
     }
   }
@@ -56,9 +62,8 @@ export class Score{
   }
 
   display() {
-    const announcements = document.getElementById('announcements')
-
     const score = document.getElementById('score');
     score.innerHTML = `Score: ${this.score}`
+    this.trickArray.length > 0 ? this.announcements.innerHTML = this.trickArray.join(', ').concat('!') : this.announcements.innerHTML = ''
   }
 }
