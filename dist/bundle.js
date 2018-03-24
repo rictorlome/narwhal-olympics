@@ -71,17 +71,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./lib/camera.js":
-/*!***********************!*\
-  !*** ./lib/camera.js ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/c/workspace/whale-olympics/lib/camera.js'\n    at Error (native)");
-
-/***/ }),
-
 /***/ "./src/game.js":
 /*!*********************!*\
   !*** ./src/game.js ***!
@@ -96,9 +85,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nature */ "./src/nature.js");
 /* harmony import */ var _timer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./timer */ "./src/timer.js");
 /* harmony import */ var _score__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./score */ "./src/score.js");
-/* harmony import */ var _lib_camera__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../lib/camera */ "./lib/camera.js");
-/* harmony import */ var _lib_camera__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_lib_camera__WEBPACK_IMPORTED_MODULE_4__);
-
 
 
 

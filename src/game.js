@@ -1,8 +1,7 @@
 import { Whale } from './whale';
-import { Ocean, Ground, Background } from './nature';
+import { Background } from './nature';
 import { Timer } from './timer';
 import { Score } from './score';
-import { Camera } from '../lib/camera'
 
 export class Game {
   constructor(DIM_X, DIM_Y) {
