@@ -78,23 +78,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-class Camera {
-  constructor(map, width, height) {
-    this.x = 0;
-    this.y = 0;
-    this.width = width;
-    this.height = height;
-    this.maxX = map.cols * map.tsize - width;
-    this.maxY = map.rows * map.tsize - height;
-    this.speed = 256;
-  }
-  move(delta, dirx, diry) {
-    this.x += dirx * this.speed * delta;
-    this.y += diry * this.speed * delta;
-    this.x = Math.max(0, Math.min(this.x, this.maxX));
-    this.y = Math.max(0, Math.min(this.y, this.maxY));
-  }
-}
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/c/workspace/whale-olympics/lib/camera.js'\n    at Error (native)");
 
 /***/ }),
 
@@ -279,30 +263,12 @@ class MovingObject {
 /*!***********************!*\
   !*** ./src/nature.js ***!
   \***********************/
-/*! exports provided: Ocean, Ground, Background */
+/*! exports provided: Background */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Ocean", function() { return Ocean; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Ground", function() { return Ground; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Background", function() { return Background; });
-class Ocean {
-  draw(ctx) {
-    ctx.fillStyle = 'blue';
-    ctx.rect(0, 1100, 2000, 250);
-    ctx.fill();
-  }
-}
-
-class Ground {
-  draw(ctx) {
-    ctx.fillStyle = 'brown';
-    ctx.rect(0, 1400, 2000, 100);
-    ctx.fill();
-  }
-}
-
 class Background {
   draw(ctx, whale) {
     let img = new Image(2500, 10000);
