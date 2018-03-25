@@ -17,7 +17,7 @@ export class Whale extends MovingObject {
     }
   }
   decelerate() {
-    this.vel = PhysUtil.scale(this.vel, .8)
+    if (this.underwater) this.vel = PhysUtil.scale(this.vel, .8)
   }
   nudge() {
     this.vel = [.3,-.3]

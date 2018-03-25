@@ -4,9 +4,7 @@ import { Timer } from './timer';
 import { Score } from './score';
 
 export class Game {
-  constructor(DIM_X, DIM_Y) {
-    this.DIM_X = DIM_X;
-    this.DIM_Y = DIM_Y;
+  constructor() {
     this.whale = new Whale({
       pos: [90000000000000,7400],
       game: this
@@ -25,8 +23,8 @@ export class Game {
   }
 
   draw(bCtx, wCtx) {
-    bCtx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-    wCtx.clearRect(0, 0, 100, 100)
+    bCtx.clearRect(0, 0, bCtx.canvas.width, bCtx.canvas.height);
+    wCtx.clearRect(0, 0, wCtx.canvas.width, wCtx.canvas.height);
 
     if (this.timer.timeleft === 0 && this.whale.underwater) {
       this.finish()

@@ -15,9 +15,9 @@ export class GameView {
     const boundGameMoveObjects = Game.prototype.moveObjects.bind(this.game)
 
     this.bindKeyHandlers();
-    
-    window.setInterval(boundGameDraw, 20, this.bCtx, this.wCtx);
-    window.setInterval(boundGameMoveObjects, 20);
+
+    window.setInterval(boundGameDraw, 26, this.bCtx, this.wCtx);
+    window.setInterval(boundGameMoveObjects, 26);
   }
 
   bindKeyHandlers() {

@@ -91,9 +91,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Game {
-  constructor(DIM_X, DIM_Y) {
-    this.DIM_X = DIM_X;
-    this.DIM_Y = DIM_Y;
+  constructor() {
     this.whale = new _whale__WEBPACK_IMPORTED_MODULE_0__["Whale"]({
       pos: [90000000000000, 7400],
       game: this
@@ -112,8 +110,8 @@ class Game {
   }
 
   draw(bCtx, wCtx) {
-    bCtx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-    wCtx.clearRect(0, 0, 100, 100);
+    bCtx.clearRect(0, 0, bCtx.canvas.width, bCtx.canvas.height);
+    wCtx.clearRect(0, 0, wCtx.canvas.width, wCtx.canvas.height);
 
     if (this.timer.timeleft === 0 && this.whale.underwater) {
       this.finish();
@@ -193,8 +191,8 @@ class GameView {
 
     this.bindKeyHandlers();
 
-    window.setInterval(boundGameDraw, 20, this.bCtx, this.wCtx);
-    window.setInterval(boundGameMoveObjects, 20);
+    window.setInterval(boundGameDraw, 26, this.bCtx, this.wCtx);
+    window.setInterval(boundGameMoveObjects, 26);
   }
 
   bindKeyHandlers() {
@@ -298,13 +296,18 @@ class MovingObject {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Background", function() { return Background; });
 class Background {
+  constructor() {
+    this.img = new Image(2500, 10000);
+    this.img.src = 'assets/whale-olympics-background.png';
+  }
+
   draw(ctx, whale) {
-    let img = new Image(2500, 10000);
-    img.src = 'assets/whale-olympics-background.png';
+    const img = this.img;
     let sx = whale.pos[0];
     let sy = whale.pos[1];
-    ctx.drawImage(img, (sx - 1925) % 2500, sy, 575, 750, 0, 0, 575, 750);
-    ctx.drawImage(img, sx % 2500, sy, 575, 750, 0, 0, 575, 750);
+
+    ctx.drawImage(img, (sx - 1925) % img.width, sy, ctx.canvas.width, ctx.canvas.height, 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(img, sx % img.width, sy, ctx.canvas.width, ctx.canvas.height, 0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 }
 
@@ -467,7 +470,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Timer", function() { return Timer; });
 class Timer {
   constructor() {
-    this.timeleft = 11;
+    this.timeleft = 250;
   }
   start() {
     this.count = window.setInterval(() => {
@@ -510,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const wCanvas = document.getElementById('whale-canvas');
   const wCtx = wCanvas.getContext('2d');
 
-  const new_game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](575, 750);
+  const new_game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"]();
   const new_game_view = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](new_game, bCtx, wCtx);
 
   start_button.addEventListener('click', e => {
@@ -557,7 +560,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     }
   }
   decelerate() {
-    this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["scale"](this.vel, .8);
+    if (this.underwater) this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["scale"](this.vel, .8);
   }
   nudge() {
     this.vel = [.3, -.3];

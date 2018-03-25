@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const wCanvas = document.getElementById('whale-canvas');
   const wCtx = wCanvas.getContext('2d');
 
-
-  const new_game = new Game(575,750);
+  const new_game = new Game();
   const new_game_view = new GameView(new_game, bCtx, wCtx);
 
   start_button.addEventListener('click', (e) => {
