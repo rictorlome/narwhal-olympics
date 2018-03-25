@@ -101,6 +101,8 @@ class Game {
     this.background = new _nature__WEBPACK_IMPORTED_MODULE_1__["Background"]();
     this.timer = new _timer__WEBPACK_IMPORTED_MODULE_2__["Timer"]();
     this.score = new _score__WEBPACK_IMPORTED_MODULE_3__["Score"](this.whale);
+    this.started = false;
+    this.addListener();
   }
 
   randomPosition() {
@@ -112,13 +114,51 @@ class Game {
   draw(bCtx, wCtx) {
     bCtx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     wCtx.clearRect(0, 0, 100, 100);
+
+    if (this.timer.timeleft === 0 && this.whale.underwater) {
+      this.finish();
+      return;
+    }
+
     this.background.draw(bCtx, this.whale);
     this.whale.draw(wCtx);
   }
 
   moveObjects() {
-    this.whale.move();
+    if (this.started) this.whale.move();
   }
+  finish() {
+    const bCanvas = document.getElementById('game-canvas');
+    const wCanvas = document.getElementById('whale-canvas');
+    const gameOverModal = document.getElementById('game-over-modal');
+
+    bCanvas.classList.add('hidden');
+    wCanvas.classList.add('hidden');
+    gameOverModal.classList.remove('hidden');
+  }
+  restart() {
+    const bCanvas = document.getElementById('game-canvas');
+    const wCanvas = document.getElementById('whale-canvas');
+    const gameOverModal = document.getElementById('game-over-modal');
+
+    bCanvas.classList.remove('hidden');
+    wCanvas.classList.remove('hidden');
+    gameOverModal.classList.add('hidden');
+
+    this.whale.pos = [90000000000000, 7400];
+    this.whale.vel = [0, 0];
+    this.whale.angle = 0;
+
+    this.timer = new _timer__WEBPACK_IMPORTED_MODULE_2__["Timer"]();
+    this.timer.start();
+    clearInterval(this.score.show);
+    this.score = new _score__WEBPACK_IMPORTED_MODULE_3__["Score"](this.whale);
+  }
+  addListener() {
+    const play_again = document.getElementById('play-again-button');
+    play_again.addEventListener('click', () => this.restart());
+  }
+
 }
 
 /***/ }),
@@ -150,7 +190,9 @@ class GameView {
   start() {
     const boundGameDraw = _game__WEBPACK_IMPORTED_MODULE_0__["Game"].prototype.draw.bind(this.game);
     const boundGameMoveObjects = _game__WEBPACK_IMPORTED_MODULE_0__["Game"].prototype.moveObjects.bind(this.game);
+
     this.bindKeyHandlers();
+
     window.setInterval(boundGameDraw, 20, this.bCtx, this.wCtx);
     window.setInterval(boundGameMoveObjects, 20);
   }
@@ -345,7 +387,7 @@ class Score {
   constructor(whale) {
     this.whale = whale;
     this.score = 0;
-    window.setInterval(() => {
+    this.show = window.setInterval(() => {
       this.display();
       this.checkWhale();
     }, 20);
@@ -425,18 +467,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Timer", function() { return Timer; });
 class Timer {
   constructor() {
-    this.timeleft = 120;
-    window.setInterval(() => {
+    this.timeleft = 11;
+  }
+  start() {
+    this.count = window.setInterval(() => {
       this.display();
       this.decrement();
     }, 1000);
   }
   decrement() {
-    this.timeleft--;
+    this.timeleft > 0 ? this.timeleft-- : clearInterval(this.count);
   }
   display() {
     const timer = document.getElementById('timer');
-    timer.innerHTML = `Time Left: ${this.timeleft}`;
+    timer.innerHTML = `Time Left: ${Math.max(0, this.timeleft - 1)}`;
   }
 }
 
@@ -457,6 +501,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('game-menu-modal');
+  const start_button = document.getElementById('start-game-button');
+
   const bCanvas = document.getElementById('game-canvas');
   const bCtx = bCanvas.getContext('2d');
 
@@ -465,6 +512,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const new_game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](575, 750);
   const new_game_view = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](new_game, bCtx, wCtx);
+
+  start_button.addEventListener('click', e => {
+    bCanvas.classList.toggle('hidden');
+    wCanvas.classList.toggle('hidden');
+    modal.classList.toggle('hidden');
+    new_game.started = true;
+    new_game.timer.start();
+  });
 
   new_game_view.start();
 });

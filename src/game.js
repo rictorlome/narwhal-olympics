@@ -14,6 +14,8 @@ export class Game {
     this.background = new Background()
     this.timer = new Timer()
     this.score = new Score(this.whale)
+    this.started = false;
+    this.addListener()
   }
 
   randomPosition() {
@@ -25,11 +27,50 @@ export class Game {
   draw(bCtx, wCtx) {
     bCtx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     wCtx.clearRect(0, 0, 100, 100)
+
+    if (this.timer.timeleft === 0 && this.whale.underwater) {
+      this.finish()
+      return;
+    }
+
     this.background.draw(bCtx,this.whale)
     this.whale.draw(wCtx)
   }
 
   moveObjects() {
-    this.whale.move()
+    if (this.started) this.whale.move()
   }
+  finish() {
+    const bCanvas = document.getElementById('game-canvas');
+    const wCanvas = document.getElementById('whale-canvas');
+    const gameOverModal = document.getElementById('game-over-modal');
+
+    bCanvas.classList.add('hidden');
+    wCanvas.classList.add('hidden');
+    gameOverModal.classList.remove('hidden');
+
+  }
+  restart() {
+    const bCanvas = document.getElementById('game-canvas');
+    const wCanvas = document.getElementById('whale-canvas');
+    const gameOverModal = document.getElementById('game-over-modal');
+
+    bCanvas.classList.remove('hidden');
+    wCanvas.classList.remove('hidden');
+    gameOverModal.classList.add('hidden');
+
+    this.whale.pos = [90000000000000, 7400]
+    this.whale.vel = [0, 0]
+    this.whale.angle = 0;
+
+    this.timer = new Timer()
+    this.timer.start();
+    clearInterval(this.score.show)
+    this.score = new Score(this.whale)
+  }
+  addListener() {
+    const play_again = document.getElementById('play-again-button')
+    play_again.addEventListener('click', () => this.restart());
+  }
+
 }

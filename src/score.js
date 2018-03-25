@@ -2,7 +2,7 @@ export class Score{
   constructor(whale) {
     this.whale = whale;
     this.score = 0;
-    window.setInterval(() => {
+    this.show = window.setInterval(() => {
       this.display();
       this.checkWhale();
     }, 20)
