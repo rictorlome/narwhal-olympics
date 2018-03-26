@@ -66,6 +66,13 @@ a {
   height: 40px;
   width: 40px;
 }
+#contact-buttons-inner #ln {
+  position:relative;
+  top:2px;
+}
+#contact-buttons-inner #mailer {
+  width: 46px;
+}
 
 #start-game-button {
   position:relative;
