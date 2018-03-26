@@ -4,7 +4,7 @@ import { GameView } from './game_view'
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('game-menu-modal')
   const start_button = document.getElementById('start-game-button')
-
+  const game_info = document.getElementById('game-info')
 
   const bCanvas = document.getElementById('game-canvas');
   const bCtx = bCanvas.getContext('2d');
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bCanvas.classList.toggle('hidden');
     wCanvas.classList.toggle('hidden');
     modal.classList.toggle('hidden');
+    game_info.classList.toggle('hidden');
     new_game.started = true;
     new_game.timer.start();
   })

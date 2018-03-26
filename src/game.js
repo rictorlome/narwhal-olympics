@@ -44,11 +44,15 @@ export class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs')
     const hj = document.getElementById('hj')
+    const gameInfo = document.getElementById('game-info')
+
+
     bCanvas.classList.add('hidden');
     wCanvas.classList.add('hidden');
     gameOverModal.classList.remove('hidden');
+    gameInfo.classList.remove('hidden');
     if (fs.innerHTML == 'Final score: ') fs.innerHTML += this.score.score;
-    if (hj.innerHTML == 'Highest jump: ') hj.innerHTML += this.score.highest;
+    if (hj.innerHTML == 'Highest jump: ') hj.innerHTML = hj.innerHTML + this.score.highest + " feet";
 
   }
   restart() {
@@ -57,10 +61,13 @@ export class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs')
     const hj = document.getElementById('hj')
+    const gameInfo = document.getElementById('game-info')
 
     bCanvas.classList.remove('hidden');
     wCanvas.classList.remove('hidden');
     gameOverModal.classList.add('hidden');
+    gameInfo.classList.add('hidden');
+
     fs.innerHTML = 'Final score: '
     hj.innerHTML = 'Highest jump: '
 

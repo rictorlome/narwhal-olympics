@@ -9,6 +9,7 @@ export class Whale extends MovingObject {
     this.underwater = false;
     this.timeOut = 0;
     this.angle = 0;
+    this.flipangle = 0;
     this.framecount = 0;
     this.waterline = 8755;
   }
@@ -29,7 +30,8 @@ export class Whale extends MovingObject {
     if (this.underwater) {
       this.vel = PhysUtil.specificVec((degree-25 % 360), speed)
     } else {
-      this.angle -= 15;
+      this.flipangle = this.flipangle - 15;
+      this.angle = (this.angle - 15) % 360;
     }
   }
   turnRight() {
@@ -38,7 +40,8 @@ export class Whale extends MovingObject {
     if (this.underwater) {
       this.vel = PhysUtil.specificVec((degree+25 % 360), speed)
     } else {
-      this.angle += 15;
+      this.flipangle = this.flipangle + 15;
+      this.angle = (this.angle + 15) % 360;
     }
   }
   freeze() {
@@ -50,6 +53,7 @@ export class Whale extends MovingObject {
       if (!this.lastUnderwater) this.checkLanding();
       this.underwater = true;
       this.timeOut = 0;
+      this.flipangle = this.angle
     } else {
       this.underwater = false;
       this.timeOut++;
@@ -59,8 +63,8 @@ export class Whale extends MovingObject {
   checkLanding() {
     let deg = PhysUtil.degree(this.vel);
     let diff;
-    this.angle > 0 ? diff = Math.abs(this.angle%360 - deg) : diff = Math.abs(360 + (this.angle%360) - deg) 
-    if (diff > 35 && this.vel[1] > 2) {
+    this.angle > 0 ? diff = Math.abs(this.angle%360 - deg) : diff = Math.abs(360 + (this.angle%360) - deg)
+    if (diff > 30 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
     }

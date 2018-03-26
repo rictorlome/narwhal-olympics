@@ -8,15 +8,15 @@ export class Score{
     }, 20)
     this.tricks = {
       'fifty' : false,
-      'hundred' : false,
-      'twohun' : false,
+      'fivehun' : false,
+      'fivek' : false,
       'halfflip' : false,
       'oneflip' : false,
       'oneandhalfflip' : false,
     }
     this.trickArray = [];
     this.announcements = document.getElementById('announcements')
-    this.highest = this.whale.waterline;
+    this.highest = 50;
   }
 
   checkWhale() {
@@ -35,27 +35,35 @@ export class Score{
     })
   }
   checkAir() {
-    if (this.whale.pos[1] < this.highest) this.highest = this.whale.pos[1];
+    const f = this.feet()
+    if (f > this.highest) this.highest = f;
+  }
+  feet() {
+    return Math.floor(7449 - this.whale.pos[1]);
   }
 
   addAir() {
-    if (this.whale.pos[1] < 7200 && !this.tricks['fifty']) {
+    const f = this.feet()
+    if (f > 50 && !this.tricks['fifty']) {
       this.tricks['fifty'] = true;
       this.trickArray.push("Fifty Feet");
       this.score += 50;
     }
-    if (this.whale.pos[1] < 6000 && !this.tricks['hundred']) {
-      this.tricks['hundred'] = true;
-      this.trickArray.push("One Hundred Feet");
+    if (f > 500 && !this.tricks['fivehun']) {
+      this.tricks['fivehun'] = true;
+      this.trickArray.push("Five Hundred Feet");
       this.score += 100;
     }
-    if (this.whale.pos[1] < 5000 && !this.tricks['twohun']) {
-      this.tricks['twohun'] = true;
-      this.trickArray.push("Two Hundred Feet");
+    if (f > 5000 && !this.tricks['fivek']) {
+      this.tricks['fivek'] = true;
+      this.trickArray.push("Five Thousand Feet");
       this.score += 200;
     }
   }
   addFlips() {
+    let halfFFlips = Math.max(0,Math.floor(this.whale.flipangle / 180));
+    let halfBFlips = Math.max(0,Math.floor(this.whale.flipangle / -180));
+
     if (this.whale.angle < -145 && !this.tricks['halfflip']) {
       this.tricks['halfflip'] = true;
       this.score += 150;

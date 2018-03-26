@@ -131,11 +131,14 @@ class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs');
     const hj = document.getElementById('hj');
+    const gameInfo = document.getElementById('game-info');
+
     bCanvas.classList.add('hidden');
     wCanvas.classList.add('hidden');
     gameOverModal.classList.remove('hidden');
+    gameInfo.classList.remove('hidden');
     if (fs.innerHTML == 'Final score: ') fs.innerHTML += this.score.score;
-    if (hj.innerHTML == 'Highest jump: ') hj.innerHTML += this.score.highest;
+    if (hj.innerHTML == 'Highest jump: ') hj.innerHTML = hj.innerHTML + this.score.highest + " feet";
   }
   restart() {
     const bCanvas = document.getElementById('game-canvas');
@@ -143,10 +146,13 @@ class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs');
     const hj = document.getElementById('hj');
+    const gameInfo = document.getElementById('game-info');
 
     bCanvas.classList.remove('hidden');
     wCanvas.classList.remove('hidden');
     gameOverModal.classList.add('hidden');
+    gameInfo.classList.add('hidden');
+
     fs.innerHTML = 'Final score: ';
     hj.innerHTML = 'Highest jump: ';
 
@@ -403,15 +409,15 @@ class Score {
     }, 20);
     this.tricks = {
       'fifty': false,
-      'hundred': false,
-      'twohun': false,
+      'fivehun': false,
+      'fivek': false,
       'halfflip': false,
       'oneflip': false,
       'oneandhalfflip': false
     };
     this.trickArray = [];
     this.announcements = document.getElementById('announcements');
-    this.highest = this.whale.waterline;
+    this.highest = 50;
   }
 
   checkWhale() {
@@ -430,27 +436,35 @@ class Score {
     });
   }
   checkAir() {
-    if (this.whale.pos[1] < this.highest) this.highest = this.whale.pos[1];
+    const f = this.feet();
+    if (f > this.highest) this.highest = f;
+  }
+  feet() {
+    return Math.floor(7449 - this.whale.pos[1]);
   }
 
   addAir() {
-    if (this.whale.pos[1] < 7200 && !this.tricks['fifty']) {
+    const f = this.feet();
+    if (f > 50 && !this.tricks['fifty']) {
       this.tricks['fifty'] = true;
       this.trickArray.push("Fifty Feet");
       this.score += 50;
     }
-    if (this.whale.pos[1] < 6000 && !this.tricks['hundred']) {
-      this.tricks['hundred'] = true;
-      this.trickArray.push("One Hundred Feet");
+    if (f > 500 && !this.tricks['fivehun']) {
+      this.tricks['fivehun'] = true;
+      this.trickArray.push("Five Hundred Feet");
       this.score += 100;
     }
-    if (this.whale.pos[1] < 5000 && !this.tricks['twohun']) {
-      this.tricks['twohun'] = true;
-      this.trickArray.push("Two Hundred Feet");
+    if (f > 5000 && !this.tricks['fivek']) {
+      this.tricks['fivek'] = true;
+      this.trickArray.push("Five Thousand Feet");
       this.score += 200;
     }
   }
   addFlips() {
+    let halfFFlips = Math.max(0, Math.floor(this.whale.flipangle / 180));
+    let halfBFlips = Math.max(0, Math.floor(this.whale.flipangle / -180));
+
     if (this.whale.angle < -145 && !this.tricks['halfflip']) {
       this.tricks['halfflip'] = true;
       this.score += 150;
@@ -482,7 +496,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Timer", function() { return Timer; });
 class Timer {
   constructor() {
-    this.timeleft = 121;
+    this.timeleft = 211;
   }
   start() {
     this.count = window.setInterval(() => {
@@ -518,6 +532,7 @@ __webpack_require__.r(__webpack_exports__);
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('game-menu-modal');
   const start_button = document.getElementById('start-game-button');
+  const game_info = document.getElementById('game-info');
 
   const bCanvas = document.getElementById('game-canvas');
   const bCtx = bCanvas.getContext('2d');
@@ -532,6 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bCanvas.classList.toggle('hidden');
     wCanvas.classList.toggle('hidden');
     modal.classList.toggle('hidden');
+    game_info.classList.toggle('hidden');
     new_game.started = true;
     new_game.timer.start();
   });
@@ -564,6 +580,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.underwater = false;
     this.timeOut = 0;
     this.angle = 0;
+    this.flipangle = 0;
     this.framecount = 0;
     this.waterline = 8755;
   }
@@ -584,7 +601,8 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     if (this.underwater) {
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree - 25 % 360, speed);
     } else {
-      this.angle -= 15;
+      this.flipangle = this.flipangle - 15;
+      this.angle = (this.angle - 15) % 360;
     }
   }
   turnRight() {
@@ -593,7 +611,8 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     if (this.underwater) {
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree + 25 % 360, speed);
     } else {
-      this.angle += 15;
+      this.flipangle = this.flipangle + 15;
+      this.angle = (this.angle + 15) % 360;
     }
   }
   freeze() {
@@ -605,6 +624,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
       if (!this.lastUnderwater) this.checkLanding();
       this.underwater = true;
       this.timeOut = 0;
+      this.flipangle = this.angle;
     } else {
       this.underwater = false;
       this.timeOut++;
@@ -615,7 +635,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     let deg = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
     let diff;
     this.angle > 0 ? diff = Math.abs(this.angle % 360 - deg) : diff = Math.abs(360 + this.angle % 360 - deg);
-    if (diff > 35 && this.vel[1] > 2) {
+    if (diff > 30 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
     }

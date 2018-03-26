@@ -7,9 +7,25 @@ body {
 html {
   font-family: 'Arimo', sans-serif;
 }
+a {
+  text-decoration: none;
+}
 
 .hidden {
   display:none;
+}
+
+#game-info {
+  font-family: 'PT Serif', serif;
+  position:absolute;
+  top: 70px;
+  left: 300px;
+}
+
+#game-info a {
+  text-decoration:none;
+  font-weight: 700;
+  color: #283287;
 }
 
 #game-menu-modal, #game-over-modal {
@@ -33,9 +49,27 @@ html {
   color: #283287;
 }
 
+#contact-buttons-outer {
+  position: absolute;
+  height: 44px;
+  width: 140px;
+  top:760px;
+  left:525px;
+}
+
+#contact-buttons-inner a {
+  width: 80px;
+  height: 100px;
+}
+
+#contact-buttons-inner img {
+  height: 40px;
+  width: 40px;
+}
+
 #start-game-button {
   position:relative;
-  left: 30px;
+  left: 190px;
   bottom: 30px;
   border: 1px solid blue;
   width: 175px;
