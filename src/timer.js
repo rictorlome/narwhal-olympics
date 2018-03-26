@@ -1,6 +1,6 @@
 export class Timer {
   constructor() {
-    this.timeleft = 250;
+    this.timeleft = 15;
   }
   start() {
     this.count = window.setInterval(() => {

@@ -16,12 +16,14 @@ export class Score{
     }
     this.trickArray = [];
     this.announcements = document.getElementById('announcements')
+    this.highest = this.whale.waterline;
   }
 
   checkWhale() {
     if (this.whale.underwater) {
       this.resetTricks();
     } else {
+      this.checkAir();
       this.addAir();
       this.addFlips();
     }
@@ -31,6 +33,9 @@ export class Score{
     Object.keys(this.tricks).forEach( (key) => {
       this.tricks[key] = false;
     })
+  }
+  checkAir() {
+    if (this.whale.pos[1] < this.highest) this.highest = this.whale.pos[1];
   }
 
   addAir() {

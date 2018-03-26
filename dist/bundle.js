@@ -129,19 +129,26 @@ class Game {
     const bCanvas = document.getElementById('game-canvas');
     const wCanvas = document.getElementById('whale-canvas');
     const gameOverModal = document.getElementById('game-over-modal');
-
+    const fs = document.getElementById('fs');
+    const hj = document.getElementById('hj');
     bCanvas.classList.add('hidden');
     wCanvas.classList.add('hidden');
     gameOverModal.classList.remove('hidden');
+    if (fs.innerHTML == 'Final score: ') fs.innerHTML += this.score.score;
+    if (hj.innerHTML == 'Highest jump: ') hj.innerHTML += this.score.highest;
   }
   restart() {
     const bCanvas = document.getElementById('game-canvas');
     const wCanvas = document.getElementById('whale-canvas');
     const gameOverModal = document.getElementById('game-over-modal');
+    const fs = document.getElementById('fs');
+    const hj = document.getElementById('hj');
 
     bCanvas.classList.remove('hidden');
     wCanvas.classList.remove('hidden');
     gameOverModal.classList.add('hidden');
+    fs.innerHTML = 'Final score: ';
+    hj.innerHTML = 'Highest jump: ';
 
     this.whale.pos = [90000000000000, 7400];
     this.whale.vel = [0, 0];
@@ -404,12 +411,14 @@ class Score {
     };
     this.trickArray = [];
     this.announcements = document.getElementById('announcements');
+    this.highest = this.whale.waterline;
   }
 
   checkWhale() {
     if (this.whale.underwater) {
       this.resetTricks();
     } else {
+      this.checkAir();
       this.addAir();
       this.addFlips();
     }
@@ -419,6 +428,9 @@ class Score {
     Object.keys(this.tricks).forEach(key => {
       this.tricks[key] = false;
     });
+  }
+  checkAir() {
+    if (this.whale.pos[1] < this.highest) this.highest = this.whale.pos[1];
   }
 
   addAir() {
@@ -470,7 +482,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Timer", function() { return Timer; });
 class Timer {
   constructor() {
-    this.timeleft = 250;
+    this.timeleft = 15;
   }
   start() {
     this.count = window.setInterval(() => {
@@ -552,7 +564,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
-    this.waterline = 8585;
+    this.waterline = 8755;
   }
   accelerate() {
     if (this.underwater && Math.abs(this.vel[0]) < 10) {

@@ -9,7 +9,7 @@ export class Whale extends MovingObject {
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
-    this.waterline = 8585;
+    this.waterline = 8755;
   }
   accelerate() {
     if (this.underwater && Math.abs(this.vel[0]) < 10) {

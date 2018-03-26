@@ -42,20 +42,27 @@ export class Game {
     const bCanvas = document.getElementById('game-canvas');
     const wCanvas = document.getElementById('whale-canvas');
     const gameOverModal = document.getElementById('game-over-modal');
-
+    const fs = document.getElementById('fs')
+    const hj = document.getElementById('hj')
     bCanvas.classList.add('hidden');
     wCanvas.classList.add('hidden');
     gameOverModal.classList.remove('hidden');
+    if (fs.innerHTML == 'Final score: ') fs.innerHTML += this.score.score;
+    if (hj.innerHTML == 'Highest jump: ') hj.innerHTML += this.score.highest;
 
   }
   restart() {
     const bCanvas = document.getElementById('game-canvas');
     const wCanvas = document.getElementById('whale-canvas');
     const gameOverModal = document.getElementById('game-over-modal');
+    const fs = document.getElementById('fs')
+    const hj = document.getElementById('hj')
 
     bCanvas.classList.remove('hidden');
     wCanvas.classList.remove('hidden');
     gameOverModal.classList.add('hidden');
+    fs.innerHTML = 'Final score: '
+    hj.innerHTML = 'Highest jump: '
 
     this.whale.pos = [90000000000000, 7400]
     this.whale.vel = [0, 0]

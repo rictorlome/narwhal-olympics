@@ -3,13 +3,16 @@
   <head>
     <meta charset="utf-8">
     <script src="lib/keymaster.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Anton|Arimo:400,700" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico"/>
     <link type="text/css" rel="stylesheet" href="assets/stylesheets/whale-olympics.css" />
     <script type="application/javascript" src="dist/bundle.js"></script>
-    <title></title>
+    <title>Narwhal Olympics</title>
   </head>
   <body>
     <div id="game-menu-modal" width="575" height="575">
-      <div>Narwhal Olympics!</div>
+      <img src="assets/narwhal-main.png" width="575" height="575" />
+      <div id="title">Narwhal Olympics!</div>
       <div id="start-game-button">Start Game</div>
     </div>
 
@@ -21,10 +24,13 @@
     <div id="score"></div>
 
     <div class="hidden" id="game-over-modal" width="575" height="575">
-      <div>Nice run!</div>
-      <div>Final score: </div>
-      <div>Highest jump: </div>
-      <div id="play-again-button">Play again!</div>
+      <img src="assets/Narwhals-end.png">
+      <div id="nice-run">Nice run!</div>
+      <div id="gameOverInnerDiv">
+        <div id="fs">Final score: </div>
+        <div id="hj">Highest jump: </div>
+        <div id="play-again-button">Play again!</div>
+      </div>
     </div>
 
 

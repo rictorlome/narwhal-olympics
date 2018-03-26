@@ -1,5 +1,11 @@
 body {
-  background-color: yellow;
+  background-color: ivory;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+html {
+  font-family: 'Arimo', sans-serif;
 }
 
 .hidden {
@@ -7,36 +13,92 @@ body {
 }
 
 #game-menu-modal, #game-over-modal {
+  border: 2px solid blue;
   position:absolute;
   z-index:4;
+  top: 100px;
   left:300px;
-  right:300px;
-  bottom:0;
-  top:0;
+  width:575px;
+  height:575px;
+  cursor: default;
   background-color: white;
+}
+
+#title {
+  position:relative;
+  bottom:500px;
+  left:225px;
+  font-family: 'Anton', sans-serif;
+  font-size: 40px;
+  color: #283287;
+}
+
+#start-game-button {
+  position:relative;
+  left: 30px;
+  bottom: 30px;
+  border: 1px solid blue;
+  width: 175px;
+  text-align: center;
+  font-size: 26px;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+#nice-run {
+  text-align: center;
+  font-family: 'Anton', sans-serif;
+  color: #283287;
+  font-size: 36px;
+}
+
+#gameOverInnerDiv {
+  width: 60%;
+  margin: 0 auto;
+  padding: 5px;
+}
+
+#fs, #hj {
+  padding-top: 20px;
+  font-size: 20px;
+}
+#play-again-button {
+  cursor: pointer;
+  border: 1px solid blue;
+  border-radius: 5px;
+  padding: 10px;
+  width: 60%;
+  margin: 30px auto;
+  text-align: center;
+  font-size: 26px;
+  font-family: 'Anton', sans-serif;
+  color: #283287;
 }
 
 #game-canvas {
   position:absolute;
   z-index: 1;
   left:300px;
+  top:150px;
+  border: 5px solid black;
 }
 #whale-canvas {
-  top:335px;
+  top:385px;
   left:540px;
   position:relative;
   z-index:2;
 }
 #timer {
   position:absolute;
-  top: 400px;
-  left:150px;
+  top: 650px;
+  left:350px;
   z-index: 3;
 }
 #score {
   position: absolute;
-  top: 400px;
-  left: 940px;
+  top: 650px;
+  left: 740px;
   z-index: 3;
 }
 #announcements {
