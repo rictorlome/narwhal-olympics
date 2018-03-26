@@ -482,7 +482,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Timer", function() { return Timer; });
 class Timer {
   constructor() {
-    this.timeleft = 15;
+    this.timeleft = 121;
   }
   start() {
     this.count = window.setInterval(() => {
@@ -560,7 +560,8 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   constructor(option) {
     option.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](40, .5);
     super(option);
-    this.underwater = true;
+    this.lastUnderwater = false;
+    this.underwater = false;
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
@@ -600,19 +601,20 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   }
   checkTimeout() {
     let depth = this.pos[1];
-    if (depth > this.waterline + 10) {
+    if (depth > this.waterline) {
+      if (!this.lastUnderwater) this.checkLanding();
       this.underwater = true;
       this.timeOut = 0;
-    } else if (depth < this.waterline - 10) {
+    } else {
       this.underwater = false;
       this.timeOut++;
-    } else {
-      this.checkLanding();
     }
   }
 
   checkLanding() {
-    let diff = Math.abs(this.angle - _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel));
+    let deg = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
+    let diff;
+    this.angle > 0 ? diff = Math.abs(this.angle % 360 - deg) : diff = Math.abs(360 + this.angle % 360 - deg);
     if (diff > 35 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
@@ -621,7 +623,7 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
 
   checkWipeout() {
     let depth = this.pos[1];
-    if (depth > 9450) {
+    if (depth > 9600) {
       this.vel[0] = .4;
       this.vel[1] = -2;
     }
@@ -629,6 +631,8 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
+    this.lastUnderwater = this.underwater;
+
     this.checkTimeout();
     this.checkWipeout();
     if (this.underwater) {

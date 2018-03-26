@@ -5,7 +5,8 @@ export class Whale extends MovingObject {
   constructor(option) {
     option.vel = PhysUtil.specificVec(40, .5);
     super(option)
-    this.underwater = true;
+    this.lastUnderwater = false;
+    this.underwater = false;
     this.timeOut = 0;
     this.angle = 0;
     this.framecount = 0;
@@ -45,19 +46,20 @@ export class Whale extends MovingObject {
   }
   checkTimeout() {
     let depth = this.pos[1];
-    if (depth > this.waterline+10) {
+    if (depth > this.waterline) {
+      if (!this.lastUnderwater) this.checkLanding();
       this.underwater = true;
       this.timeOut = 0;
-    } else if (depth < this.waterline-10) {
+    } else {
       this.underwater = false;
       this.timeOut++;
-    } else {
-      this.checkLanding()
     }
   }
 
   checkLanding() {
-    let diff = Math.abs(this.angle - PhysUtil.degree(this.vel))
+    let deg = PhysUtil.degree(this.vel);
+    let diff;
+    this.angle > 0 ? diff = Math.abs(this.angle%360 - deg) : diff = Math.abs(360 + (this.angle%360) - deg) 
     if (diff > 35 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
@@ -66,7 +68,7 @@ export class Whale extends MovingObject {
 
   checkWipeout() {
     let depth = this.pos[1];
-    if (depth > 9450) {
+    if (depth > 9600) {
       this.vel[0] = .4;
       this.vel[1] = -2;
     }
@@ -74,6 +76,8 @@ export class Whale extends MovingObject {
   move() {
     this.pos[0] += this.vel[0];
     this.pos[1] += this.vel[1];
+    this.lastUnderwater = this.underwater;
+
     this.checkTimeout();
     this.checkWipeout();
     if (this.underwater) {

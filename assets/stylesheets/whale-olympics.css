@@ -89,22 +89,24 @@ html {
   position:relative;
   z-index:2;
 }
-#timer {
+#timer, #score {
   position:absolute;
   top: 650px;
   left:350px;
   z-index: 3;
+  font-family: 'Padauk', sans-serif;
+  color: yellow;
 }
 #score {
-  position: absolute;
-  top: 650px;
   left: 740px;
-  z-index: 3;
 }
 #announcements {
   position: absolute;
-  top: 550px;
+  top: 625px;
   left: 568px;
   z-index: 3;
+  font-family: 'Padauk', sans-serif;
+  color: yellow;
+  letter-spacing: 1.5px;
   max-width: 150px;
 }
