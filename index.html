@@ -10,7 +10,38 @@
     <title>Narwhal Olympics</title>
   </head>
   <body>
-    <div id="game-info">This game was built by <a href="http://thingsishow.com">Samuel Golland<a>.</div>
+    <div id="game-title-header">Narwhal Olympics</div>
+
+    <div>
+      <audio id='song' src='assets/blue_danube.mp3'
+      loop='true'></audio>
+      <img id="gear" class='turnright' src='assets/gear.svg'></img>
+      <div id="dropdown" class='hidden'>
+        <img id="speaker" src='assets/speaker.png'>
+        <img id='speaker-mute' class='hidden' src='assets/mute-speaker.png'>
+        <img id='info' src='assets/info.png'></img>
+      </div>
+    </div>
+
+    <div id="game-info">This game was built by
+      <a href="http://thingsishow.com">Samuel Golland<a>.
+    </div>
+
+    <div id="game-info-modal" class='hidden'>
+      <img id="air" src='assets/air2.png'></img>
+      <img id="landing" src='assets/landing3.png'></img>
+      <div id="goal">Use the arrow keys to move.</div>
+      <div id="tip1">Gain speed to fly high and do flips!</div>
+      <div id="tip2">Land smoothly to keep your speed.</div>
+      <img id="keys" src='assets/keys.png'></img>
+      <div id="up">To accelerate (while underwater)</div>
+      <div id="left">To turn counter-clockwise</div>
+      <div id="right">To turn clockwise</div>
+      <div id="down">To slow down (while underwater)</div>
+    </div>
+
+
+
     <div id="game-menu-modal" width="575" height="575">
       <img src="assets/narwhal-main.png" width="575" height="575" />
       <div id="title">Narwhal Olympics!</div>

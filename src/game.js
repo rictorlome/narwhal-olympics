@@ -10,7 +10,16 @@ export class Game {
       game: this
     })
     this.background = new Background()
+
     this.timer = new Timer()
+    const gameInfoModal = document.getElementById('game-info-modal');
+    const info = document.getElementById('info');
+    info.addEventListener('click', (e) => {
+      this.timer.paused = !this.timer.paused;
+      gameInfoModal.classList.toggle('hidden');
+    });
+
+
     this.score = new Score(this.whale)
     this.started = false;
     this.addListener()
@@ -44,13 +53,12 @@ export class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs')
     const hj = document.getElementById('hj')
-    const gameInfo = document.getElementById('game-info')
 
 
     bCanvas.classList.add('hidden');
     wCanvas.classList.add('hidden');
     gameOverModal.classList.remove('hidden');
-    gameInfo.classList.remove('hidden');
+
     if (fs.innerHTML == 'Final score: ') fs.innerHTML += this.score.score;
     if (hj.innerHTML == 'Highest jump: ') hj.innerHTML = hj.innerHTML + this.score.highest + " feet";
 
@@ -61,12 +69,12 @@ export class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs')
     const hj = document.getElementById('hj')
-    const gameInfo = document.getElementById('game-info')
+    const song = document.getElementById('song')
 
     bCanvas.classList.remove('hidden');
     wCanvas.classList.remove('hidden');
-    gameOverModal.classList.add('hidden');
-    gameInfo.classList.add('hidden');
+    gameOverModal.classList.add('hidden')
+    song.currentTime = 0;
 
     fs.innerHTML = 'Final score: '
     hj.innerHTML = 'Highest jump: '
@@ -76,6 +84,7 @@ export class Game {
     this.whale.angle = 0;
 
     this.timer = new Timer()
+
     this.timer.start();
     clearInterval(this.score.show)
     this.score = new Score(this.whale)

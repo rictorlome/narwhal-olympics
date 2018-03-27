@@ -1,11 +1,13 @@
 export class Timer {
   constructor() {
-    this.timeleft = 211;
+    this.timeleft = 151;
+    this.paused = false;
   }
+
   start() {
     this.count = window.setInterval(() => {
       this.display();
-      this.decrement();
+      if (!this.paused) this.decrement();
 
     }, 1000)
   }

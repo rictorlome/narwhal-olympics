@@ -14,12 +14,28 @@ a {
 .hidden {
   display:none;
 }
+.turnleft {
+  transition-duration: 2s;
+  transform: rotate(.25turn);
+}
+.turnright {
+  transition-duration: 2s;
+  transform: rotate(-.25turn);
+}
 
 #game-info {
   font-family: 'PT Serif', serif;
   position:absolute;
-  top: 70px;
-  left: 300px;
+  top: 825px;
+  left: 450px;
+}
+
+#game-title-header {
+  width:50%;
+  position:relative;
+  font-size:40px;
+  font-family: 'PT Serif', serif;
+  left: 425px;
 }
 
 #game-info a {
@@ -28,16 +44,86 @@ a {
   color: #283287;
 }
 
-#game-menu-modal, #game-over-modal {
+#gear, #speaker, #speaker-mute, #info {
+  width: 20px;
+  height: 20px;
+  cursor:pointer;
+  position:absolute;
+  top: 100px;
+  right:235px;
+}
+
+#speaker, #speaker-mute {
+  top:130px;
+}
+#info {
+  top: 160px;
+}
+
+#game-menu-modal, #game-over-modal, #game-info-modal {
   border: 2px solid blue;
   position:absolute;
   z-index:4;
   top: 100px;
   left:300px;
-  width:575px;
+  width:581px;
   height:575px;
   cursor: default;
   background-color: white;
+}
+#game-info-modal {
+  z-index: 5;
+  background-color:#99C4EE;
+}
+#landing, #air {
+  position:absolute;
+  border:3px solid black;
+  left:-1px;
+}
+#landing {
+  left:289px;
+}
+#game-info-modal div {
+  font-family: 'Anton', sans-serif;
+  font-size: 16px;
+  position: relative;
+}
+#goal, #tip1, #tip2 {
+  position:absolute;
+}
+#goal {
+  left:197px;
+  top:321px;
+  font-size:22px;
+  color:brown;
+}
+#tip1, #tip2 {
+  display:inline-block;
+  left: 30px;
+}
+#tip2 {
+  left: 100px;
+}
+#up, #down {
+  top: 307px;
+  left: 185px;
+}
+#down {
+  top: 450px;
+}
+#left, #right {
+  top: 420px;
+  display:inline-block;
+  left: 5px;
+}
+#right {
+  display:inline-block;
+  left: 250px;
+}
+#keys {
+  position: absolute;
+  top: 340px;
+  left:169px;
 }
 
 #title {
@@ -53,7 +139,7 @@ a {
   position: absolute;
   height: 44px;
   width: 140px;
-  top:760px;
+  top:770px;
   left:525px;
 }
 
