@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
   gear.addEventListener('click', (e) => {
     gear.classList.toggle('turnright');
     gear.classList.toggle('turnleft');
-    dropdown.classList.toggle('hidden')
+    dropdown.classList.toggle('invisible');
+    dropdown.classList.toggle('visible');
   })
 
   start_button.addEventListener('click', (e) => {

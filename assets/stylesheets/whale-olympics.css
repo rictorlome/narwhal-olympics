@@ -1,6 +1,6 @@
 body {
   background-color: ivory;
-  width: 100vw;
+  width: 80vw;
   overflow-x: hidden;
 }
 
@@ -22,12 +22,22 @@ a {
   transition-duration: 2s;
   transform: rotate(-.25turn);
 }
+.visible {
+  transition-duration: 1s;
+  visibility: visible;
+  opacity: 1;
+}
+.invisible {
+  transition-duration: 1s;
+  visibility: hidden;
+  opacity: 0;
+}
 
 #game-info {
   font-family: 'PT Serif', serif;
   position:absolute;
   top: 825px;
-  left: 450px;
+  left: 750px;
 }
 
 #game-title-header {
@@ -35,7 +45,7 @@ a {
   position:relative;
   font-size:40px;
   font-family: 'PT Serif', serif;
-  left: 425px;
+  left: 725px;
 }
 
 #game-info a {
@@ -50,7 +60,7 @@ a {
   cursor:pointer;
   position:absolute;
   top: 100px;
-  right:235px;
+  left:1200px;
 }
 
 #speaker, #speaker-mute {
@@ -65,7 +75,7 @@ a {
   position:absolute;
   z-index:4;
   top: 100px;
-  left:300px;
+  left:600px;
   width:581px;
   height:575px;
   cursor: default;
@@ -140,7 +150,7 @@ a {
   height: 44px;
   width: 140px;
   top:770px;
-  left:525px;
+  left:825px;
 }
 
 #contact-buttons-inner a {
@@ -206,31 +216,33 @@ a {
 #game-canvas {
   position:absolute;
   z-index: 1;
-  left:300px;
+  left:600px;
   top:150px;
   border: 5px solid black;
 }
 #whale-canvas {
   top:385px;
-  left:540px;
+  left:840px;
   position:relative;
   z-index:2;
 }
 #timer, #score {
-  position:absolute;
+  position:fixed;
+  display:inline-block;
   top: 650px;
-  left:350px;
+  left:660px;
   z-index: 3;
   font-family: 'Padauk', sans-serif;
   color: yellow;
 }
 #score {
-  left: 740px;
+  left: 1050px;
 }
 #announcements {
-  position: absolute;
+  position: fixed;
+  display: block;
   top: 625px;
-  left: 568px;
+  left: 850px;
   z-index: 3;
   font-family: 'Padauk', sans-serif;
   color: yellow;
