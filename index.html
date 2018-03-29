@@ -5,81 +5,103 @@
     <script src="lib/keymaster.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Anton|Arimo:400,700|Padauk|PT+Serif" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico"/>
-    <link type="text/css" rel="stylesheet" href="assets/stylesheets/whale-olympics.css" />
+    <link type="text/css" rel="stylesheet" href="assets/stylesheets/application.css" />
     <script type="application/javascript" src="dist/bundle.js"></script>
     <title>Narwhal Olympics</title>
   </head>
   <body>
-    <div id="game-title-header">Narwhal Olympics</div>
 
-    <div>
-      <audio id='song' src='assets/blue_danube.mp3'
-      loop='true'></audio>
-      <img id="gear" class='turnright' src='assets/gear.svg'></img>
-      <div id="dropdown" class='visible'>
-        <img id="speaker" src='assets/speaker.png'>
-        <img id='speaker-mute' class='hidden' src='assets/mute-speaker.png'>
-        <img id='info' src='assets/info.png'></img>
+    <div class="game-wrapper">
+
+      <div></div>
+
+      <div class="main-screen-wrapper">
+        <div id="game-title-header">Narwhal Olympics</div>
+
+          <div id="game-info-modal" class='hidden'>
+            <div class="game-info-modal-container">
+              <div class="game-info-modal-top">
+                <div id="tip1">Gain speed to fly high and do flips!</div>
+                <div id="tip2">Land smoothly to keep your speed.</div>
+                <img id="air" src='assets/air2.png'></img>
+                <img id="landing" src='assets/landing3.png'></img>
+              </div>
+              <div class="game-info-modal-bottom">
+                <div id="goal">Use the arrow keys to move.</div>
+                <img id="keys" src='assets/keys.png'></img>
+                <div id="up">To accelerate (while underwater)</div>
+                <div id="left">To turn counter-clockwise</div>
+                <div id="right">To turn clockwise</div>
+                <div id="down">To slow down (while underwater)</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="game-menu-modal" width="575" height="575">
+            <img src="assets/narwhal-main.png" width="575" height="575" />
+            <div id="title">Narwhal Olympics!</div>
+            <div id="start-game-button">Start Game</div>
+          </div>
+
+          <div class="hidden" id="game-over-modal" width="575" height="575">
+            <img src="assets/Narwhals-end.png">
+            <div id="nice-run">Nice run!</div>
+            <div id="gameOverInnerDiv">
+              <div id="fs">Final score: </div>
+              <div id="hj">Highest jump: </div>
+              <div id="play-again-button">Play again!</div>
+            </div>
+          </div>
+
+          <div id="game-play-div" class="hidden">
+            <canvas  id="game-canvas" width="575" height="575"></canvas>
+            <canvas  id="whale-canvas" width="100" height="100"></canvas>
+            <div id="timer"></div>
+            <div id="score"></div>
+            <div id="announcements"></div>
+          </div>
+
+
+
+
+          <div class="game-info-and-contact">
+            <div id="game-info">This game was built by
+              <a href="http://thingsishow.com">Samuel Golland<a>.
+              </div>
+
+              <div id="contact-buttons-outer">
+                <div id="contact-buttons-inner">
+                  <a href="http://www.github.com/rictorlome"><img src='assets/github-logo.svg'></img>
+                  </a>
+                  <a href="https://www.linkedin.com/in/sam-golland-01a112153"><img id="ln" src='assets/ln-logo.png'></img>
+                  </a>
+                  <a href=mailto:samuelgolland@gmail.com><img id="mailer" src='assets/email.svg'></img>
+                  </a>
+                </div>
+              </div>
+          </div>
+
+
+
       </div>
-    </div>
 
-    <div id="game-info">This game was built by
-      <a href="http://thingsishow.com">Samuel Golland<a>.
-    </div>
-
-    <div id="game-info-modal" class='hidden'>
-      <img id="air" src='assets/air2.png'></img>
-      <img id="landing" src='assets/landing3.png'></img>
-      <div id="goal">Use the arrow keys to move.</div>
-      <div id="tip1">Gain speed to fly high and do flips!</div>
-      <div id="tip2">Land smoothly to keep your speed.</div>
-      <img id="keys" src='assets/keys.png'></img>
-      <div id="up">To accelerate (while underwater)</div>
-      <div id="left">To turn counter-clockwise</div>
-      <div id="right">To turn clockwise</div>
-      <div id="down">To slow down (while underwater)</div>
-    </div>
-
-
-
-    <div id="game-menu-modal" width="575" height="575">
-      <img src="assets/narwhal-main.png" width="575" height="575" />
-      <div id="title">Narwhal Olympics!</div>
-      <div id="start-game-button">Start Game</div>
-    </div>
-
-    <div id="contact-buttons-outer">
-      <div id="contact-buttons-inner">
-        <a href="http://www.github.com/rictorlome">
-          <img src='assets/github-logo.svg'></img>
-        </a>
-
-        <a href="https://www.linkedin.com/in/sam-golland-01a112153">
-          <img id="ln" src='assets/ln-logo.png'></img>
-        </a>
-
-        <a href=mailto:samuelgolland@gmail.com>
-          <img id="mailer" src='assets/email.svg'></img>
-        </a>
+      <div class="audio-and-dropdown">
+        <audio id='song' src='assets/blue_danube.mp3'
+        loop='true'></audio>
+        <img id="gear" class='turnright' src='assets/gear.svg'></img>
+        <div id="dropdown" class='visible'>
+          <img id="speaker" src='assets/speaker.png'>
+          <img id='speaker-mute' class='hidden' src='assets/mute-speaker.png'>
+          <img id='info' src='assets/info.png'></img>
+        </div>
       </div>
+
     </div>
 
 
-    <canvas class="hidden" id="game-canvas" width="575" height="575"></canvas>
-    <canvas class="hidden" id="whale-canvas" width="100" height="100"></canvas>
-    <div id="announcements"></div>
-    <div id="timer"></div>
-    <div id="score"></div>
 
-    <div class="hidden" id="game-over-modal" width="575" height="575">
-      <img src="assets/Narwhals-end.png">
-      <div id="nice-run">Nice run!</div>
-      <div id="gameOverInnerDiv">
-        <div id="fs">Final score: </div>
-        <div id="hj">Highest jump: </div>
-        <div id="play-again-button">Play again!</div>
-      </div>
-    </div>
+
+
 
 
   </body>

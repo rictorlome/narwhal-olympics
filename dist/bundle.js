@@ -99,7 +99,11 @@ class Game {
     this.background = new _nature__WEBPACK_IMPORTED_MODULE_1__["Background"]();
 
     this.timer = new _timer__WEBPACK_IMPORTED_MODULE_2__["Timer"]();
+
+    const gameMenuModal = document.getElementById('game-menu-modal');
+    const gameOverModal = document.getElementById('game-over-modal');
     const gameInfoModal = document.getElementById('game-info-modal');
+    const gamePlay = document.getElementById('game-play-div');
     const info = document.getElementById('info');
     info.addEventListener('click', e => {
       this.timer.paused = !this.timer.paused;
@@ -139,7 +143,9 @@ class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs');
     const hj = document.getElementById('hj');
+    const timer = document.getElementById('timer');
 
+    timer.innerHTML = '';
     bCanvas.classList.add('hidden');
     wCanvas.classList.add('hidden');
     gameOverModal.classList.remove('hidden');
@@ -506,7 +512,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Timer", function() { return Timer; });
 class Timer {
   constructor() {
-    this.timeleft = 151;
+    this.timeleft = 121;
     this.paused = false;
   }
 
@@ -542,6 +548,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  const game_play = document.getElementById('game-play-div');
   const modal = document.getElementById('game-menu-modal');
   const start_button = document.getElementById('start-game-button');
   const game_info = document.getElementById('game-info');
@@ -580,8 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   start_button.addEventListener('click', e => {
-    bCanvas.classList.toggle('hidden');
-    wCanvas.classList.toggle('hidden');
+    game_play.classList.toggle('hidden');
     modal.classList.toggle('hidden');
     song.play();
     new_game.started = true;

@@ -12,7 +12,12 @@ export class Game {
     this.background = new Background()
 
     this.timer = new Timer()
+
+
+    const gameMenuModal = document.getElementById('game-menu-modal');
+    const gameOverModal = document.getElementById('game-over-modal');
     const gameInfoModal = document.getElementById('game-info-modal');
+    const gamePlay = document.getElementById('game-play-div')
     const info = document.getElementById('info');
     info.addEventListener('click', (e) => {
       this.timer.paused = !this.timer.paused;
@@ -53,8 +58,9 @@ export class Game {
     const gameOverModal = document.getElementById('game-over-modal');
     const fs = document.getElementById('fs')
     const hj = document.getElementById('hj')
+    const timer = document.getElementById('timer')
 
-
+    timer.innerHTML = ''
     bCanvas.classList.add('hidden');
     wCanvas.classList.add('hidden');
     gameOverModal.classList.remove('hidden');

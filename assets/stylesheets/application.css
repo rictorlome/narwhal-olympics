@@ -1,0 +1,40 @@
+@import 'whale-olympics.css';
+
+
+html {
+  font-family: 'Arimo', sans-serif;
+}
+
+body {
+  background-color: ivory;
+  width: 100%;
+  overflow: hidden;
+  display:flex;
+  justify-content: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+.hidden {
+  display:none;
+}
+.turnleft {
+  transition-duration: 2s;
+  transform: rotate(.25turn);
+}
+.turnright {
+  transition-duration: 2s;
+  transform: rotate(-.25turn);
+}
+.visible {
+  transition-duration: 1s;
+  visibility: visible;
+  opacity: 1;
+}
+.invisible {
+  transition-duration: 1s;
+  visibility: hidden;
+  opacity: 0;
+}

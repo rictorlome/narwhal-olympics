@@ -1,51 +1,48 @@
-body {
-  background-color: ivory;
-  width: 80vw;
-  overflow-x: hidden;
+.game-wrapper {
+  display:flex;
+  flex-direction: row;
+  width:800px;
 }
 
-html {
-  font-family: 'Arimo', sans-serif;
-}
-a {
-  text-decoration: none;
+.main-screen-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
 }
 
-.hidden {
-  display:none;
+.game-info-and-contact {
+  margin-top: 70px;
+  display:flex;
+  flex-direction:column;
+  justify-content: space-between;
+  align-items: center;
 }
-.turnleft {
-  transition-duration: 2s;
-  transform: rotate(.25turn);
+.audio-and-dropdown {
+  position: relative;
+  left: 5px;
+  top:80px;
 }
-.turnright {
-  transition-duration: 2s;
-  transform: rotate(-.25turn);
+
+#game-play-div {
+  margin: 0 auto;
+  width: 585px;
+  height: 585px;
 }
-.visible {
-  transition-duration: 1s;
-  visibility: visible;
-  opacity: 1;
-}
-.invisible {
-  transition-duration: 1s;
-  visibility: hidden;
-  opacity: 0;
+
+#game-title-header {
+  width:100%;
+  font-size:40px;
+  font-family: 'PT Serif', serif;
+  left: 725px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 #game-info {
   font-family: 'PT Serif', serif;
-  position:absolute;
-  top: 825px;
-  left: 750px;
-}
-
-#game-title-header {
-  width:50%;
-  position:relative;
-  font-size:40px;
-  font-family: 'PT Serif', serif;
-  left: 725px;
+  margin-bottom: 10px;
 }
 
 #game-info a {
@@ -58,9 +55,6 @@ a {
   width: 20px;
   height: 20px;
   cursor:pointer;
-  position:absolute;
-  top: 100px;
-  left:1200px;
 }
 
 #speaker, #speaker-mute {
@@ -72,10 +66,7 @@ a {
 
 #game-menu-modal, #game-over-modal, #game-info-modal {
   border: 2px solid blue;
-  position:absolute;
   z-index:4;
-  top: 100px;
-  left:600px;
   width:581px;
   height:575px;
   cursor: default;
@@ -84,7 +75,17 @@ a {
 #game-info-modal {
   z-index: 5;
   background-color:#99C4EE;
+  margin-bottom:2000px;
 }
+.game-info-modal-container {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+}
+.game-info-modal-top {
+  display:flex;
+  flex-direction:row;
+}
+
 #landing, #air {
   position:absolute;
   border:3px solid black;
@@ -98,31 +99,31 @@ a {
   font-size: 16px;
   position: relative;
 }
-#goal, #tip1, #tip2 {
-  position:absolute;
-}
+
 #goal {
   left:197px;
-  top:321px;
+  bottom:88px;
   font-size:22px;
   color:brown;
 }
 #tip1, #tip2 {
+  z-index: 2;
   display:inline-block;
   left: 30px;
+  top:20px;
 }
 #tip2 {
   left: 100px;
 }
 #up, #down {
-  top: 307px;
+  bottom: 390px;
   left: 185px;
 }
 #down {
-  top: 450px;
+  bottom: 245px;
 }
 #left, #right {
-  top: 420px;
+  bottom: 280px;
   display:inline-block;
   left: 5px;
 }
@@ -131,8 +132,8 @@ a {
   left: 250px;
 }
 #keys {
-  position: absolute;
-  top: 340px;
+  position:relative;
+  bottom: 100px;
   left:169px;
 }
 
@@ -146,11 +147,8 @@ a {
 }
 
 #contact-buttons-outer {
-  position: absolute;
   height: 44px;
   width: 140px;
-  top:770px;
-  left:825px;
 }
 
 #contact-buttons-inner a {
@@ -173,7 +171,7 @@ a {
 #start-game-button {
   position:relative;
   left: 190px;
-  bottom: 30px;
+  bottom: 45px;
   border: 1px solid blue;
   width: 175px;
   text-align: center;
@@ -214,35 +212,35 @@ a {
 }
 
 #game-canvas {
-  position:absolute;
   z-index: 1;
-  left:600px;
-  top:150px;
   border: 5px solid black;
 }
 #whale-canvas {
-  top:385px;
-  left:840px;
+  bottom: 325px;
+  left: 250px;
   position:relative;
   z-index:2;
 }
-#timer, #score {
-  position:fixed;
-  display:inline-block;
-  top: 650px;
-  left:660px;
+
+#timer, #score, #announcements {
+  position:relative;
+  display:inline-flex;
+  max-width: 150px;
   z-index: 3;
   font-family: 'Padauk', sans-serif;
   color: yellow;
+  bottom: 175px;
+  right: 70px;
 }
 #score {
-  left: 1050px;
+  left: 290px;
 }
 #announcements {
-  position: fixed;
   display: block;
-  top: 625px;
-  left: 850px;
+  height:30px;
+  left: 235px;
+  bottom: 245px;
+  overflow: visible;
   z-index: 3;
   font-family: 'Padauk', sans-serif;
   color: yellow;

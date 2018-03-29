@@ -2,6 +2,7 @@ import { Game } from './game'
 import { GameView } from './game_view'
 
 document.addEventListener('DOMContentLoaded', () => {
+  const game_play = document.getElementById('game-play-div')
   const modal = document.getElementById('game-menu-modal')
   const start_button = document.getElementById('start-game-button')
   const game_info = document.getElementById('game-info')
@@ -40,8 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   start_button.addEventListener('click', (e) => {
-    bCanvas.classList.toggle('hidden');
-    wCanvas.classList.toggle('hidden');
+    game_play.classList.toggle('hidden');
     modal.classList.toggle('hidden');
     song.play();
     new_game.started = true;

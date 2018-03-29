@@ -1,6 +1,6 @@
 export class Timer {
   constructor() {
-    this.timeleft = 151;
+    this.timeleft = 121;
     this.paused = false;
   }
 
