@@ -12,19 +12,6 @@ export class Game {
     this.background = new Background()
 
     this.timer = new Timer()
-
-
-    const gameMenuModal = document.getElementById('game-menu-modal');
-    const gameOverModal = document.getElementById('game-over-modal');
-    const gameInfoModal = document.getElementById('game-info-modal');
-    const gamePlay = document.getElementById('game-play-div')
-    const info = document.getElementById('info');
-    info.addEventListener('click', (e) => {
-      this.timer.paused = !this.timer.paused;
-      gameInfoModal.classList.toggle('hidden');
-    });
-
-
     this.score = new Score(this.whale)
     this.started = false;
     this.addListener()

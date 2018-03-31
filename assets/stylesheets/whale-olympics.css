@@ -19,7 +19,7 @@
 }
 
 .game-info-and-contact {
-  margin-top: 30px;
+  margin-top: 15px;
   display:flex;
   flex-direction:column;
   justify-content: space-between;
@@ -29,6 +29,7 @@
   position: relative;
   left: 5px;
   top:80px;
+  z-index: 5;
 }
 
 #game-play-div {
@@ -181,10 +182,19 @@
   border: 1px solid blue;
   width: 175px;
   text-align: center;
-  font-size: 26px;
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #283287;
+  box-shadow: 1.5px 1.5px 1px 0px rgba(0,0,0,0.75);
+}
+#start-game-button:hover {
+  transition-duration: 2s;
+  color: black;
 }
 
 #nice-run {

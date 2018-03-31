@@ -7,7 +7,6 @@ export class GameView {
     this.bCtx = bCtx;
     this.wCtx = wCtx;
     this.whale = this.game.whale
-    window.whale = this.whale
   }
 
   start() {
@@ -25,7 +24,5 @@ export class GameView {
     key('down', () => this.whale.decelerate());
     key('left', () => this.whale.turnLeft());
     key('right', () => this.whale.turnRight());
-    key('space', () => this.whale.freeze());
-    key('n', ()=> this.whale.nudge())
   }
 }

@@ -2,16 +2,18 @@ import { Game } from './game'
 import { GameView } from './game_view'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const game_play = document.getElementById('game-play-div')
-  const modal = document.getElementById('game-menu-modal')
-  const start_button = document.getElementById('start-game-button')
-  const game_info = document.getElementById('game-info')
+  const gamePlay = document.getElementById('game-play-div')
+  const gameMenuModal = document.getElementById('game-menu-modal')
+  const gameInfoModal = document.getElementById('game-info-modal');
+
+  const startButton = document.getElementById('start-game-button')
+
   const gear = document.getElementById('gear')
   const dropdown = document.getElementById('dropdown')
   const song = document.getElementById('song')
-
   const mute = document.getElementById('speaker')
   const unmute = document.getElementById('speaker-mute')
+  const info = document.getElementById('info');
 
   const bCanvas = document.getElementById('game-canvas');
   const bCtx = bCanvas.getContext('2d');
@@ -21,6 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const new_game = new Game();
   const new_game_view = new GameView(new_game, bCtx, wCtx);
+
+  gear.addEventListener('click', (e) => {
+    gear.classList.toggle('turnright');
+    gear.classList.toggle('turnleft');
+    dropdown.classList.toggle('invisible');
+    dropdown.classList.toggle('visible');
+  })
 
   mute.addEventListener('click', (e) => {
     mute.classList.toggle('hidden')
@@ -33,16 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
     song.muted = false;
   })
 
-  gear.addEventListener('click', (e) => {
-    gear.classList.toggle('turnright');
-    gear.classList.toggle('turnleft');
-    dropdown.classList.toggle('invisible');
-    dropdown.classList.toggle('visible');
-  })
+  info.addEventListener('click', (e) => {
+    if (new_game.started) new_game.timer.paused = !new_game.timer.paused;
+    gameInfoModal.classList.toggle('hidden');
+  });
 
-  start_button.addEventListener('click', (e) => {
-    game_play.classList.toggle('hidden');
-    modal.classList.toggle('hidden');
+  startButton.addEventListener('click', (e) => {
+    gamePlay.classList.toggle('hidden');
+    gameMenuModal.classList.toggle('hidden');
     song.play();
     new_game.started = true;
     new_game.timer.start();
