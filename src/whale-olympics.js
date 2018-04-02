@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mute = document.getElementById('speaker')
   const unmute = document.getElementById('speaker-mute')
   const info = document.getElementById('info');
+  const reload = document.getElementById('reload')
 
   const bCanvas = document.getElementById('game-canvas');
   const bCtx = bCanvas.getContext('2d');
@@ -23,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const new_game = new Game();
   const new_game_view = new GameView(new_game, bCtx, wCtx);
+
+  reload.addEventListener('click', (e) => {
+    window.location.reload(false);
+  })
 
   gear.addEventListener('click', (e) => {
     gear.classList.toggle('turnright');

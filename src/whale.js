@@ -12,6 +12,8 @@ export class Whale extends MovingObject {
     this.flipangle = 0;
     this.framecount = 0;
     this.waterline = 8755;
+    this.smooth = document.getElementById('smoothsplash')
+    this.rock = document.getElementById('rocksplash')
   }
   accelerate() {
     if (this.underwater && Math.abs(this.vel[0]) < 10) {
@@ -67,6 +69,9 @@ export class Whale extends MovingObject {
     if (diff > 30 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
+      this.rock.play()
+    } else {
+      this.smooth.play()
     }
   }
 

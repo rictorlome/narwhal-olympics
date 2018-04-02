@@ -546,6 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mute = document.getElementById('speaker');
   const unmute = document.getElementById('speaker-mute');
   const info = document.getElementById('info');
+  const reload = document.getElementById('reload');
 
   const bCanvas = document.getElementById('game-canvas');
   const bCtx = bCanvas.getContext('2d');
@@ -555,6 +556,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const new_game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"]();
   const new_game_view = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](new_game, bCtx, wCtx);
+
+  reload.addEventListener('click', e => {
+    window.location.reload(false);
+  });
 
   gear.addEventListener('click', e => {
     gear.classList.toggle('turnright');
@@ -618,6 +623,8 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     this.flipangle = 0;
     this.framecount = 0;
     this.waterline = 8755;
+    this.smooth = document.getElementById('smoothsplash');
+    this.rock = document.getElementById('rocksplash');
   }
   accelerate() {
     if (this.underwater && Math.abs(this.vel[0]) < 10) {
@@ -673,6 +680,9 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     if (diff > 30 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
+      this.rock.play();
+    } else {
+      this.smooth.play();
     }
   }
 

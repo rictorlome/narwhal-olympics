@@ -58,10 +58,14 @@
   color: #283287;
 }
 
-#gear, #speaker, #speaker-mute, #info {
+#gear, #speaker, #speaker-mute, #info, #reload {
   width: 20px;
   height: 20px;
   cursor:pointer;
+}
+#dropdown {
+  display: flex;
+  flex-direction: column;
 }
 
 #speaker, #speaker-mute {
