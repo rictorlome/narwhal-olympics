@@ -171,6 +171,13 @@ class Game {
   addListener() {
     const play_again = document.getElementById('play-again-button');
     play_again.addEventListener('click', () => this.restart());
+
+    const reload = document.getElementById('reload');
+    reload.addEventListener('click', () => {
+      if (!this.started) return;
+      this.finish();
+      this.restart();
+    });
   }
 
 }
@@ -405,19 +412,22 @@ class Score {
   constructor(whale) {
     this.whale = whale;
     this.score = 0;
+
     this.show = window.setInterval(() => {
       this.display();
       this.checkWhale();
     }, 20);
-    this.tricks = {
-      'fifty': false,
-      'fivehun': false,
-      'fivek': false,
-      'halfflip': false,
-      'oneflip': false,
-      'oneandhalfflip': false
+
+    this.airTricks = {
+      'Fifty Feet': false,
+      'Five Hundred Feet': false,
+      'One Thousand Feet': false
     };
-    this.trickArray = [];
+    this.flipTricks = {
+      'Forward Flips': 0,
+      'Backward Flips': 0
+    };
+
     this.announcements = document.getElementById('announcements');
     this.highest = 50;
   }
@@ -432,9 +442,11 @@ class Score {
     }
   }
   resetTricks() {
-    this.trickArray = [];
-    Object.keys(this.tricks).forEach(key => {
-      this.tricks[key] = false;
+    Object.keys(this.airTricks).forEach(key => {
+      this.airTricks[key] = false;
+    });
+    Object.keys(this.flipTricks).forEach(key => {
+      this.flipTricks[key] = 0;
     });
   }
   checkAir() {
@@ -447,19 +459,16 @@ class Score {
 
   addAir() {
     const f = this.feet();
-    if (f > 50 && !this.tricks['fifty']) {
-      this.tricks['fifty'] = true;
-      this.trickArray.push("Fifty Feet");
+    if (f > 50 && !this.airTricks['Fifty Feet']) {
+      this.airTricks['Fifty Feet'] = true;
       this.score += 50;
     }
-    if (f > 500 && !this.tricks['fivehun']) {
-      this.tricks['fivehun'] = true;
-      this.trickArray.push("Five Hundred Feet");
+    if (f > 1000 && !this.airTricks['Five Hundred Feet']) {
+      this.airTricks['Five Hundred Feet'] = true;
       this.score += 100;
     }
-    if (f > 5000 && !this.tricks['fivek']) {
-      this.tricks['fivek'] = true;
-      this.trickArray.push("Five Thousand Feet");
+    if (f > 2000 && !this.airTricks['One Thousand Feet']) {
+      this.airTricks['One Thousand Feet'] = true;
       this.score += 200;
     }
   }
@@ -467,20 +476,47 @@ class Score {
     let halfFFlips = Math.max(0, Math.floor(this.whale.flipangle / 180));
     let halfBFlips = Math.max(0, Math.floor(this.whale.flipangle / -180));
 
-    if (this.whale.angle < -145 && !this.tricks['halfflip']) {
-      this.tricks['halfflip'] = true;
-      this.score += 150;
-    }
-    if (this.whale.angle > 40 && this.tricks['halfflip'] && this.tricks['oneflip']) {
-      this.tricks['oneflip'] = true;
-      this.score += 300;
-    }
+    this.flipTricks['Forward Flips'] = Math.floor((halfFFlips + 1) / 2);
+    this.flipTricks['Backward Flips'] = Math.floor((halfBFlips + 1) / 2);
   }
 
   display() {
     const score = document.getElementById('score');
     score.innerHTML = `Score: ${this.score}`;
-    this.trickArray.length > 0 ? this.announcements.innerHTML = this.trickArray.join(', ').concat('!') : this.announcements.innerHTML = '';
+
+    const hTrick = this.determineHeightTrick();
+    hTrick === undefined ? this.announcements.innerHTML = '' : this.announcements.innerHTML = hTrick.concat('!');
+
+    const fTrick = this.determineFlipTrick();
+    fTrick === "" ? this.announcements.innerHTML = this.announcements.innerHTML : this.announcementsinnerHTML += fTrick;
+  }
+
+  determineHeightTrick() {
+    const airDisp = ['Fifty Feet', 'Five Hundred Feet', 'One Thousand Feet'];
+
+    const trickArr = Object.keys(this.airTricks).map(trick => {
+      if (Boolean(this.airTricks[trick])) {
+        return airDisp.indexOf(trick);
+      } else {
+        return -1;
+      }
+    });
+    return airDisp[Math.max(...trickArr)];
+  }
+  determineFlipTrick() {
+    const trickArray = Object.keys(this.flipTricks).map(trick => {
+      if (this.flipTricks[trick] === 0) {
+        return -1;
+      } else {
+        return String(this.flipTricks[trick]).concat(' ').concat(trick);
+      }
+    });
+    const resArray = [];
+    trickArray.forEach(trick => {
+      if (trick !== -1) resArray.push(trick);
+    });
+    return resArray.join(', ');
+    debugger;
   }
 }
 
@@ -546,7 +582,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const mute = document.getElementById('speaker');
   const unmute = document.getElementById('speaker-mute');
   const info = document.getElementById('info');
-  const reload = document.getElementById('reload');
 
   const bCanvas = document.getElementById('game-canvas');
   const bCtx = bCanvas.getContext('2d');
@@ -556,10 +591,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const new_game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"]();
   const new_game_view = new _game_view__WEBPACK_IMPORTED_MODULE_1__["GameView"](new_game, bCtx, wCtx);
-
-  reload.addEventListener('click', e => {
-    window.location.reload(false);
-  });
 
   gear.addEventListener('click', e => {
     gear.classList.toggle('turnright');
@@ -675,13 +706,16 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
 
   checkLanding() {
     let deg = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
+    const speed = _physics_util__WEBPACK_IMPORTED_MODULE_1__["speed"](this.vel);
     let diff;
     this.angle > 0 ? diff = Math.abs(this.angle % 360 - deg) : diff = Math.abs(360 + this.angle % 360 - deg);
     if (diff > 30 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
+      this.rock.volume = Math.min(speed / 50, 1);
       this.rock.play();
     } else {
+      this.smooth.volume = Math.min(speed / 50, 1);
       this.smooth.play();
     }
   }

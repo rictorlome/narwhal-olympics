@@ -85,6 +85,13 @@ export class Game {
   addListener() {
     const play_again = document.getElementById('play-again-button')
     play_again.addEventListener('click', () => this.restart());
+
+    const reload = document.getElementById('reload')
+    reload.addEventListener('click', () => {
+      if (!this.started) return;
+      this.finish();
+      this.restart();
+    })
   }
 
 }

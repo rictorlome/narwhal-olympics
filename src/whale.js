@@ -64,13 +64,16 @@ export class Whale extends MovingObject {
 
   checkLanding() {
     let deg = PhysUtil.degree(this.vel);
+    const speed = PhysUtil.speed(this.vel);
     let diff;
     this.angle > 0 ? diff = Math.abs(this.angle%360 - deg) : diff = Math.abs(360 + (this.angle%360) - deg)
     if (diff > 30 && this.vel[1] > 2) {
       this.vel[0] /= 10;
       this.vel[1] /= 10;
+      this.rock.volume = Math.min(speed / 50, 1)
       this.rock.play()
     } else {
+      this.smooth.volume = Math.min(speed / 50,1)
       this.smooth.play()
     }
   }

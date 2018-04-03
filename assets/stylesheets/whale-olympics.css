@@ -258,12 +258,12 @@
 #announcements {
   display: block;
   height:30px;
-  left: 235px;
+  left: 255px;
   bottom: 245px;
   overflow: visible;
   z-index: 3;
   font-family: 'Padauk', sans-serif;
   color: yellow;
   letter-spacing: 1.5px;
-  max-width: 150px;
+  max-width: 175px;
 }
