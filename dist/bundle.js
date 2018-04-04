@@ -176,6 +176,8 @@ class Game {
     reload.addEventListener('click', () => {
       if (!this.started) return;
       this.finish();
+      clearInterval(this.timer.count);
+      clearInterval(this.score.show);
       this.restart();
     });
   }
@@ -424,11 +426,14 @@ class Score {
       'One Thousand Feet': false
     };
     this.flipTricks = {
-      'Forward Flips': 0,
-      'Backward Flips': 0
+      'Forward Flip': 0,
+      'Backward Flip': 0
     };
+    this.lastFF = 0;
+    this.lastBF = 0;
 
-    this.announcements = document.getElementById('announcements');
+    this.heightAnn = document.getElementById('announcements-height');
+    this.flipAnn = document.getElementById('announcements-flips');
     this.highest = 50;
   }
 
@@ -448,6 +453,8 @@ class Score {
     Object.keys(this.flipTricks).forEach(key => {
       this.flipTricks[key] = 0;
     });
+    this.lastFF = 0;
+    this.lastBF = 0;
   }
   checkAir() {
     const f = this.feet();
@@ -473,11 +480,23 @@ class Score {
     }
   }
   addFlips() {
-    let halfFFlips = Math.max(0, Math.floor(this.whale.flipangle / 180));
-    let halfBFlips = Math.max(0, Math.floor(this.whale.flipangle / -180));
+    const halfFFlips = Math.max(0, Math.floor(this.whale.flipangle / 180));
+    const halfBFlips = Math.max(0, Math.floor(this.whale.flipangle / -180));
 
-    this.flipTricks['Forward Flips'] = Math.floor((halfFFlips + 1) / 2);
-    this.flipTricks['Backward Flips'] = Math.floor((halfBFlips + 1) / 2);
+    const fFlips = Math.floor((halfFFlips + 1) / 2);
+    const bFlips = Math.floor((halfBFlips + 1) / 2);
+
+    if (fFlips !== this.lastFF) {
+      this.score += fFlips * 100;
+      this.lastFF = fFlips;
+    }
+    if (bFlips !== this.lastBF) {
+      this.score += bFlips * 100;
+      this.lastBF = bFlips;
+    }
+
+    this.flipTricks['Forward Flip'] = fFlips;
+    this.flipTricks['Backward Flip'] = bFlips;
   }
 
   display() {
@@ -485,10 +504,14 @@ class Score {
     score.innerHTML = `Score: ${this.score}`;
 
     const hTrick = this.determineHeightTrick();
-    hTrick === undefined ? this.announcements.innerHTML = '' : this.announcements.innerHTML = hTrick.concat('!');
+    hTrick === undefined ? this.heightAnn.innerHTML = '' : this.heightAnn.innerHTML = hTrick.concat('!');
 
     const fTrick = this.determineFlipTrick();
-    fTrick === "" ? this.announcements.innerHTML = this.announcements.innerHTML : this.announcementsinnerHTML += fTrick;
+    if (fTrick === "") {
+      this.flipAnn.innerHTML = '';
+    } else {
+      this.flipAnn.innerHTML = fTrick.concat('!');
+    }
   }
 
   determineHeightTrick() {
@@ -508,7 +531,10 @@ class Score {
       if (this.flipTricks[trick] === 0) {
         return -1;
       } else {
-        return String(this.flipTricks[trick]).concat(' ').concat(trick);
+        let t = trick;
+        const cnt = this.flipTricks[trick];
+        cnt > 1 ? t = t.concat('s') : t = t;
+        return String(cnt).concat(' ').concat(t);
       }
     });
     const resArray = [];
@@ -516,7 +542,6 @@ class Score {
       if (trick !== -1) resArray.push(trick);
     });
     return resArray.join(', ');
-    debugger;
   }
 }
 

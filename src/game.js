@@ -90,6 +90,8 @@ export class Game {
     reload.addEventListener('click', () => {
       if (!this.started) return;
       this.finish();
+      clearInterval(this.timer.count)
+      clearInterval(this.score.show)
       this.restart();
     })
   }
