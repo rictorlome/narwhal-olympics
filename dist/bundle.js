@@ -207,6 +207,7 @@ class GameView {
     this.bCtx = bCtx;
     this.wCtx = wCtx;
     this.whale = this.game.whale;
+    this.bindKeyHandlers = this.bindKeyHandlers.bind(this);
   }
 
   start() {
@@ -220,10 +221,31 @@ class GameView {
   }
 
   bindKeyHandlers() {
-    key('up', () => this.whale.accelerate());
-    key('down', () => this.whale.decelerate());
-    key('left', () => this.whale.turnLeft());
-    key('right', () => this.whale.turnRight());
+    const whale = this.whale;
+    document.onkeydown = function (e) {
+      e = e || window.event;
+      switch (e.key || e.keyCode) {
+        case 'ArrowLeft':
+          whale.turnLeft();
+          break;
+
+        case 'ArrowUp':
+          whale.accelerate();
+          break;
+
+        case 'ArrowRight':
+          whale.turnRight();
+          break;
+
+        case 'ArrowDown':
+          whale.decelerate();
+          break;
+
+        default:
+          return;
+      }
+      e.preventDefault();
+    };
   }
 }
 
@@ -697,6 +719,8 @@ class Whale extends _moving_object__WEBPACK_IMPORTED_MODULE_0__["MovingObject"] 
     let degree = _physics_util__WEBPACK_IMPORTED_MODULE_1__["degree"](this.vel);
     let speed = _physics_util__WEBPACK_IMPORTED_MODULE_1__["speed"](this.vel);
     if (this.underwater) {
+      this.turningL = false;
+      this.turningR = false;
       this.vel = _physics_util__WEBPACK_IMPORTED_MODULE_1__["specificVec"](degree - 25 % 360, speed);
     } else {
       this.flipangle = this.flipangle - 15;

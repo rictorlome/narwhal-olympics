@@ -30,6 +30,8 @@ export class Whale extends MovingObject {
     let degree = PhysUtil.degree(this.vel)
     let speed = PhysUtil.speed(this.vel)
     if (this.underwater) {
+      this.turningL = false;
+      this.turningR = false;
       this.vel = PhysUtil.specificVec((degree-25 % 360), speed)
     } else {
       this.flipangle = this.flipangle - 15;

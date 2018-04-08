@@ -7,6 +7,7 @@ export class GameView {
     this.bCtx = bCtx;
     this.wCtx = wCtx;
     this.whale = this.game.whale
+    this.bindKeyHandlers = this.bindKeyHandlers.bind(this);
   }
 
   start() {
@@ -20,9 +21,30 @@ export class GameView {
   }
 
   bindKeyHandlers() {
-    key('up', () => this.whale.accelerate());
-    key('down', () => this.whale.decelerate());
-    key('left', () => this.whale.turnLeft());
-    key('right', () => this.whale.turnRight());
+    const whale = this.whale;
+    document.onkeydown = function(e) {
+    e = e || window.event;
+    switch(e.key || e.keyCode) {
+      case 'ArrowLeft':
+      whale.turnLeft();
+      break;
+
+      case 'ArrowUp':
+      whale.accelerate();
+      break;
+      
+      case 'ArrowRight':
+      whale.turnRight();
+      break;
+
+      case 'ArrowDown':
+      whale.decelerate();
+      break;
+
+      default: return;
+    }
+    e.preventDefault();
+    };
+
   }
 }
