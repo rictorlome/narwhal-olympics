@@ -2,7 +2,7 @@
 
 ![Screenshot](https://raw.githubusercontent.com/rictorlome/rictorlome.github.io/master/img/narwhal-main.png)
 
-[PLAY THE GAME](http://www.thingsishow.com/whale-olympics)
+[PLAY THE GAME](http://www.thingsishow.com/narwhal-olympics)
 
 ### Don't be discouraged! Press up to gain speed! Fly into the sky and land nose first!
 
