@@ -1,38 +1,40 @@
-# whale-olympics
+# narwhal-olympics
+
+![Screenshot](https://raw.githubusercontent.com/rictorlome/rictorlome.github.io/master/img/narwhal-main.png)
+
+[PLAY THE GAME](http://www.thingsishow.com/whale-olympics)
+
+### Don't be discouraged! Press up to gain speed! Fly into the sky and land nose first!
 
 ## Background
 
 Whale Olympics is a one player adventure game based on the timeless classic Dolphin Olympics 2. The general idea of the game is to perform aerial acrobatics such as flipping and rolling while breaching the surface of the water. The gameplay increases in intensity as the whale picks up in speed and achieves greater altitudes in the air.
 
-## Functionality & MVP
+## Instructions
 
-The gameplay of Whale Olympics will allow users to:
-- Control the direction and speed of the whale using the arrow keys.
-- Get the whale to spin by holding down the down button.
-- Collect points based on the combination and smooth landing of different aerial tricks
+To play the game, use the ```ARROW KEYS``` to direct the motion of the whale. ```UP``` speeds the whale up while underwater. ```LEFT``` and ```RIGHT``` turn the whale counter-clockwise and clockwise respectively.
 
-In addition, the project will feature:
-- A production README
-- An instructions page
-- A free swim mode without a clock
+## Design
 
-## Architecture and Technologies
+The game was made without reliance on any external ```JavaScript``` libraries. Using only ```HTML5```'s native ```Canvas API```, a custom physics engine, and manual sprite animation, I designed and built this looping side-scroller from scratch. I also wove together different open-source SVGs in ```Sketch``` in order to create a seamless, multilayered background.
 
-The main resources I intend to draw upon are: vanilla JavaScript, specifically the canvas functionality, HTML and CSS, and some sprite libraries. Following the principles of Object Oriented Design, I will probably decompose the file and class structure into main components such as: the whale, the ocean, the sky, the background, auxiliary marine-life, and a landing page. I will use webpack to bundle these files up.
+One of the more challenging parts of the project was discovering how to loop the background image seamlessly over the canvas without breaks and without repeating parts of the image. The main idea consisted of precisely isolating the white-space which arose from naive looping, and rendering a second copy of the background - but only for the 575 pixels of width, during which the background image was looping.
 
-## Implementation Timeline
+```JavaScript
+draw(ctx, whale) {
+  const img = this.img;
+  let sx = whale.pos[0] % 5000;
+  let sy = whale.pos[1];
+  let whiteSpace = 5000 - whale.pos[0] % 5000;
+  ctx.drawImage(img, sx, sy, ctx.canvas.width, ctx.canvas.height, 0, 0, ctx.canvas.width, ctx.canvas.height);
+  if (0 < whiteSpace && whiteSpace < 575) {
+    ctx.drawImage(img, 0, sy, ctx.canvas.width, ctx.canvas.height, whiteSpace, 0, ctx.canvas.width, ctx.canvas.height);
+  }
+}
+```
 
-### Day 1
-- Full day of Canvas.
-- Block out ocean and sky.
-- Block out whale.
-- Attempt to get whale to respond to directions.
-### Day 2
-- Begin styling whale.
-- Add points for spins and rolls.
-- Make speed responsive based on crashing and smooth landings.
-### Day 3
-- Add styling and animation to sprites.
-- Add sounds based.
-- Style background, ocean and sky.
-- Create instructions page.
+## Additional Features
+
+Who knows what the future of narwhal olympics holds? I am thinking of adding a height meter to the display, so that the user can see how high he or she has flown without waiting for the trick display to appear.
+
+I am also considering adding more thorough instructions, because the game seems a little too difficult for first time players.
